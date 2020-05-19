@@ -6,6 +6,8 @@
 #include <sstream>               // ostringstream
 #include <string>                // strings
 
+#include <seqan3/test/expect_range_eq.hpp> // EXPECT_RANGE_EQ macro
+
 #pragma once
 
 // Provides functions for CLI test implementation.
