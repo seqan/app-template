@@ -6,7 +6,8 @@
 #include <sstream>               // ostringstream
 #include <string>                // strings
 
-#include <seqan3/test/expect_range_eq.hpp> // EXPECT_RANGE_EQ macro
+// Include the EXPECT_RANGE_EQ macro for better information if range elements differ.
+#include <seqan3/test/expect_range_eq.hpp>
 
 #pragma once
 
