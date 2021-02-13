@@ -18,7 +18,7 @@ file (MAKE_DIRECTORY ${SEQAN3_TEST_CLONE_DIR}/googletest/include/)
 include ("${SEQAN3_CLONE_DIR}/test/cmake/seqan3_require_test.cmake")
 seqan3_require_test ()
 if (CMAKE_VERSION VERSION_LESS 3.14)
-    set_target_properties(gtest PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${SEQAN3_TEST_CLONE_DIR}/googletest/include/")
+    set_target_properties(gtest_main PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${SEQAN3_TEST_CLONE_DIR}/googletest/include/")
 endif ()
 
 # Build tests just before their execution, because they have not been built with "all" target.
