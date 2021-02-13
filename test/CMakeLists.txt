@@ -13,8 +13,13 @@ list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_CXX_COMPILER=${CMAKE_CX
 list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}")
 list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE}")
+set (SEQAN3_TEST_CLONE_DIR "${PROJECT_BINARY_DIR}/vendor/googletest")
+file (MAKE_DIRECTORY ${SEQAN3_TEST_CLONE_DIR}/googletest/include/)
 include ("${SEQAN3_CLONE_DIR}/test/cmake/seqan3_require_test.cmake")
 seqan3_require_test ()
+if (CMAKE_VERSION VERSION_LESS 3.14)
+    set_target_properties(gtest PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${SEQAN3_TEST_CLONE_DIR}/googletest/include/")
+endif ()
 
 # Build tests just before their execution, because they have not been built with "all" target.
 # The trick is here to provide a cmake file as a directory property that executes the build command.
