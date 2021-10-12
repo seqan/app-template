@@ -111,7 +111,19 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../${{ env.REPOSITORY_NAME }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
+
+      - name: Build application
+        env:
+          CCACHE_BASEDIR: ${{ github.workspace }}
+          CCACHE_DIR: ${{ github.workspace }}/.ccache
+          CCACHE_COMPRESS: true
+          CCACHE_COMPRESSLEVEL: 6
+          CCACHE_MAXSIZE: 500M
+        run: |
+          ccache -p || true
+          cd build
+          make -k -j2
+          ccache -s || true
 
       - name: Build tests
         env:

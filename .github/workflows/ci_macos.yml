@@ -114,13 +114,20 @@ jobs:
           make -k -j3
           ccache -s || true
 
-      - name: Build and run tests
+      - name: Build tests
         env:
           CCACHE_BASEDIR: ${{ github.workspace }}
           CCACHE_DIR: ${{ github.workspace }}/.ccache
           CCACHE_COMPRESS: true
           CCACHE_COMPRESSLEVEL: 6
           CCACHE_MAXSIZE: 500M
+        run: |
+          ccache -p || true
+          cd build
+          make -k -j3 api_test cli_test
+          ccache -s || true
+
+      - name: Run tests
         run: |
           cd build
           ctest . -j3 --output-on-failure
