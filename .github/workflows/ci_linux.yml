@@ -111,7 +111,21 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../${{ env.REPOSITORY_NAME }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
+          cmake ../${{ env.REPOSITORY_NAME }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+                                              -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
+
+      - name: Build application
+        env:
+          CCACHE_BASEDIR: ${{ github.workspace }}
+          CCACHE_DIR: ${{ github.workspace }}/.ccache
+          CCACHE_COMPRESS: true
+          CCACHE_COMPRESSLEVEL: 6
+          CCACHE_MAXSIZE: 500M
+        run: |
+          ccache -p || true
+          cd build
+          make -k -j2
+          ccache -s || true
 
       - name: Build tests
         env:
@@ -142,7 +156,12 @@ jobs:
         run: |
           lcov --directory ./build/ --capture --output-file ./build/coverage_report.captured
           lcov -a ./build/coverage_report.baseline -a ./build/coverage_report.captured --output-file ./build/coverage_report.total
-          lcov --remove ./build/coverage_report.total '/usr/*' '${{ github.workspace }}/${{ env.REPOSITORY_NAME }}/lib/*' '${{ github.workspace }}/${{ env.REPOSITORY_NAME }}/test/*' '${{ github.workspace }}/build/vendor/*' --output-file ./build/coverage_report
+          lcov --remove ./build/coverage_report.total \
+                        '/usr/*' \
+                        '${{ github.workspace }}/${{ env.REPOSITORY_NAME }}/lib/*' \
+                        '${{ github.workspace }}/${{ env.REPOSITORY_NAME }}/test/*' \
+                        '${{ github.workspace }}/build/vendor/*' \
+               --output-file ./build/coverage_report
 
       - name: Submit coverage report
         if: matrix.build == 'coverage'
