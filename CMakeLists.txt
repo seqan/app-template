@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.8)
 ## CUSTOMISE
 
 # Define the application name and version.
-project (fastq_to_fasta VERSION 1.0.0)
+project (app-template VERSION 1.0.0)
 
 ## BUILD
 
