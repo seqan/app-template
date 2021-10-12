@@ -29,10 +29,6 @@ file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake"
             "execute_process (COMMAND ${CMAKE_COMMAND} --build ./header --target header_test)\n")
 set_directory_properties (PROPERTIES TEST_INCLUDE_FILE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake")
 
-# Define the test targets. All depending targets are built just before the test execution.
-add_custom_target (api_test)
-add_custom_target (cli_test)
-
 # Test executables and libraries should not mix with the application files.
 unset (CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
 unset (CMAKE_LIBRARY_OUTPUT_DIRECTORY)
@@ -61,23 +57,6 @@ macro (add_app_test test_filename)
     unset (source_file)
     unset (target)
     unset (test_name)
-endmacro ()
-
-# A macro that adds an api test.
-macro (add_api_test test_filename)
-    add_app_test (${test_filename})
-
-    seqan3_test_component (target "${test_filename}" TARGET_NAME)
-    add_dependencies (api_test ${target})
-endmacro ()
-
-# A macro that adds a cli test.
-macro (add_cli_test test_filename)
-    add_app_test (${test_filename})
-
-    seqan3_test_component (target "${test_filename}" TARGET_NAME)
-    add_dependencies (cli_test ${target})
-    add_dependencies (${target} "${PROJECT_NAME}")
 endmacro ()
 
 string (TOUPPER ${PROJECT_NAME} uppercase_project_name)
