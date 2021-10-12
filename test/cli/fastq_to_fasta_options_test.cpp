@@ -8,6 +8,9 @@
 #include <seqan3/core/detail/debug_stream_type.hpp>
 #include <seqan3/io/sequence_file/input.hpp>
 
+// Include the EXPECT_RANGE_EQ macro for better information if range elements differ.
+#include <seqan3/test/expect_range_eq.hpp>
+
 #include "cli_test.hpp"
 
 // To prevent issues when running multiple CLI tests in parallel, give each CLI test unique names:
