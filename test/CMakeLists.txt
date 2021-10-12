@@ -41,7 +41,7 @@ unset (CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 include (seqan3_test_component)
 
 # A macro that adds an api or cli test.
-macro (add_app_test test_filename test_alternative)
+macro (add_app_test test_filename)
     # Extract the test target name.
     file (RELATIVE_PATH source_file "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_LIST_DIR}/${test_filename}")
     seqan3_test_component (target "${source_file}" TARGET_NAME)
@@ -55,14 +55,6 @@ macro (add_app_test test_filename test_alternative)
     target_include_directories (${target} PUBLIC "${SEQAN3_CLONE_DIR}/test/include")
     target_include_directories (${target} PUBLIC "${SEQAN3_TEST_CLONE_DIR}/googletest/include/")
 
-    # Add the test to its general target (cli or api).
-    if (${test_alternative} STREQUAL "CLI_TEST")
-        add_dependencies (${target} "${PROJECT_NAME}") # cli test needs the application executable
-        add_dependencies (cli_test ${target})
-    elseif (${test_alternative} STREQUAL "API_TEST")
-        add_dependencies (api_test ${target})
-    endif ()
-
     # Generate and set the test name.
     add_test (NAME "${test_name}" COMMAND ${target})
 
@@ -73,12 +65,19 @@ endmacro ()
 
 # A macro that adds an api test.
 macro (add_api_test test_filename)
-    add_app_test (${test_filename} API_TEST)
+    add_app_test (${test_filename})
+
+    seqan3_test_component (target "${test_filename}" TARGET_NAME)
+    add_dependencies (api_test ${target})
 endmacro ()
 
 # A macro that adds a cli test.
 macro (add_cli_test test_filename)
-    add_app_test (${test_filename} CLI_TEST)
+    add_app_test (${test_filename})
+
+    seqan3_test_component (target "${test_filename}" TARGET_NAME)
+    add_dependencies (cli_test ${target})
+    add_dependencies (${target} "${PROJECT_NAME}")
 endmacro ()
 
 string (TOUPPER ${PROJECT_NAME} uppercase_project_name)
