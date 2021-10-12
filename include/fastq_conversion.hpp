@@ -1,6 +1,5 @@
 #pragma once
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/io/sequence_file/all.hpp>
+
 #include <seqan3/std/filesystem>
 
 /*! \brief Function, converting fastq files to fasta files.
