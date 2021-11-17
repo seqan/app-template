@@ -2,10 +2,9 @@
 #include <string>                // strings
 #include <vector>                // vectors
 
+#include <seqan3/alphabet/detail/debug_stream_alphabet.hpp>
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/core/detail/debug_stream_alphabet.hpp>
-#include <seqan3/core/detail/debug_stream_tuple.hpp>
-#include <seqan3/core/detail/debug_stream_type.hpp>
+#include <seqan3/core/debug_stream/tuple.hpp>
 #include <seqan3/io/sequence_file/input.hpp>
 
 // Include the EXPECT_RANGE_EQ macro for better information if range elements differ.
