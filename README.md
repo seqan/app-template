@@ -59,7 +59,7 @@ Probably you want to name your app differently — simply replace `app-template`
 Please note that the command line interface tests fail if you use an individual project name without adapting the
 name in the test file.
 
-Instructions:
+## Instructions:
 1. clone this repository: `git clone --recurse-submodules https://github.com/seqan/app-template.git app-template`
 2. edit the project name in the *project* command of `app-template/CMakeLists.txt`
 3. create a build directory and visit it: `mkdir build && cd build`
@@ -68,3 +68,4 @@ Instructions:
 6. optional: build and run the tests: `make test`
 7. optional: build the api documentation: `make doc`
 8. execute the app: `./bin/app-template`
+9. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy
