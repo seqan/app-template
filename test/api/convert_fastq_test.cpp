@@ -9,7 +9,7 @@
 
 TEST(group1, out_empty)
 {
-    std::string expected{"> seq1\nACGTTTGATTCGCG\n> seq2\nTCGGGGGATTCGCG\n"};
+    std::string expected{">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n"};
     testing::internal::CaptureStdout();
     convert_fastq(DATADIR"in.fastq", "");
     std::string std_cout = testing::internal::GetCapturedStdout();

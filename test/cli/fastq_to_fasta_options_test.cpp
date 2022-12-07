@@ -46,7 +46,7 @@ TEST_F(fastq_to_fasta, with_argument)
 {
     cli_test_result result = execute_app("app-template", data("in.fastq"));
     EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, "> seq1\nACGTTTGATTCGCG\n> seq2\nTCGGGGGATTCGCG\n");
+    EXPECT_EQ(result.out, ">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n");
     EXPECT_EQ(result.err, std::string{});
 }
 
@@ -54,7 +54,7 @@ TEST_F(fastq_to_fasta, with_argument_verbose)
 {
     cli_test_result result = execute_app("app-template", data("in.fastq"), "-v");
     EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, "> seq1\nACGTTTGATTCGCG\n> seq2\nTCGGGGGATTCGCG\n");
+    EXPECT_EQ(result.out, ">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n");
     EXPECT_EQ(result.err, "Conversion was a success. Congrats!\n");
 }
 
