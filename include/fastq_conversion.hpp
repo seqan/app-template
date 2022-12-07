@@ -1,6 +1,6 @@
 #pragma once
 
-#include <seqan3/std/filesystem>
+#include <filesystem>
 
 /*! \brief Function, converting fastq files to fasta files.
  *  \param fastq_file input file path to the fastq file
