@@ -3,12 +3,18 @@ name: CI misc
 on:
   push:
     branches:
-      # Push events to branches matching refs/heads/master
-      - 'master'
+      - 'main'
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: misc-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
+  CMAKE_VERSION: 3.16.9
   SEQAN3_NO_VERSION_CHECK: 1
+  SHARG_NO_VERSION_CHECK: 1
   TZ: Europe/Berlin
 
 defaults:
@@ -18,7 +24,7 @@ defaults:
 jobs:
   build:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 120
     strategy:
       fail-fast: false
@@ -28,32 +34,32 @@ jobs:
             build: documentation
             build_threads: 2
             test_threads: 2
-            cmake: 3.8.2
-            doxygen: 1.9.3
+            cmake: 3.16.9
+            doxygen: 1.9.4
             requires_toolchain: false
             requires_ccache: false
             skip_build_tests: true
             skip_run_tests: false
-          - name: "Header gcc11"
-            cxx: "g++-11"
-            cc: "gcc-11"
+          - name: "Header gcc12"
+            cxx: "g++-12"
+            cc: "gcc-12"
             build_type: Release
             build: header
             build_threads: 2
             test_threads: 2
-            cmake: 3.8.2
+            cmake: 3.16.9
             requires_toolchain: true
             requires_ccache: true
             skip_build_tests: false
             skip_run_tests: true
-          - name: "Header gcc7"
-            cxx: "g++-7"
-            cc: "gcc-7"
+          - name: "Header gcc10"
+            cxx: "g++-10"
+            cc: "gcc-10"
             build_type: Release
             build: header
             build_threads: 2
             test_threads: 2
-            cmake: 3.8.2
+            cmake: 3.16.9
             requires_toolchain: true
             requires_ccache: true
             skip_build_tests: false
@@ -64,7 +70,7 @@ jobs:
         run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ${{ env.REPOSITORY_NAME }}
           fetch-depth: 2
@@ -87,7 +93,9 @@ jobs:
 
       - name: Install ccache
         if: matrix.requires_ccache
-        run: sudo apt-get install --yes ccache
+        run: |
+          conda install --yes --override-channels --channel conda-forge ccache
+          sudo ln -s $CONDA/bin/ccache /usr/bin/ccache
 
       - name: Install compiler ${{ matrix.cxx }}
         if: matrix.requires_toolchain
@@ -95,7 +103,7 @@ jobs:
 
       - name: Load ccache
         if: matrix.requires_ccache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .ccache
           key: ${{ matrix.name }}-ccache-${{ github.ref }}-${{ github.run_number }}
@@ -122,6 +130,9 @@ jobs:
           cmake ../${{ env.REPOSITORY_NAME }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                                               -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}" \
                                               -D${header_test_flag}=${{ matrix.build == 'header' && 'ON' || 'OFF'}}
+          if [[ "${{ matrix.build }}" =~ ^(header)$ ]]; then
+            make -j${{ matrix.build_threads }} gtest_build
+          fi
 
       - name: Build tests
         if: ${{!matrix.skip_build_tests}}
@@ -129,8 +140,8 @@ jobs:
           CCACHE_BASEDIR: ${{ github.workspace }}
           CCACHE_DIR: ${{ github.workspace }}/.ccache
           CCACHE_COMPRESS: true
-          CCACHE_COMPRESSLEVEL: 6
-          CCACHE_MAXSIZE: 500M
+          CCACHE_COMPRESSLEVEL: 12
+          CCACHE_MAXSIZE: 75M
           CMAKE_BUILD_PARALLEL_LEVEL: ${{ matrix.build_threads }}
         run: |
           ccache -p || true
@@ -158,7 +169,7 @@ jobs:
       - name: Upload documentation
         if: matrix.build == 'documentation'
         continue-on-error: true
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: documentation
           path: documentation.tar.gz
