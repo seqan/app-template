@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.16)
 
 ## CUSTOMISE
 
@@ -29,10 +29,12 @@ find_package (SeqAn3 QUIET REQUIRED HINTS lib/seqan3/build_system)
 
 # Allow to include CMake scripts from seqan3.
 list (APPEND CMAKE_MODULE_PATH "${SEQAN3_CLONE_DIR}/test/cmake/")
+# Allow to include CMake scripts from the app-template.
+list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/test/cmake/")
 
 # Use ccache.
-include (seqan3_require_ccache)
-seqan3_require_ccache ()
+include (seqan_require_ccache)
+seqan_require_ccache ()
 
 # Add the application.
 add_subdirectory (src)
