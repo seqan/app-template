@@ -26,13 +26,13 @@
         `&label=App-Template%20CI` - text on the badge
         `"Open GitHub actions page"` - this text will be shown on hover
 -->
-[1]: https://img.shields.io/github/workflow/status/seqan/app-template/CI%20on%20Linux/master?style=flat&logo=github&label=App-Template%20CI "Open GitHub actions page"
+[1]: https://img.shields.io/github/actions/workflow/status/seqan/app-template/ci_linux.yml?branch=main&style=flat&logo=github&label=App-Template%20CI "Open GitHub actions page"
 <!--
     This is the CI badge link:
         `https://github.com/seqan/app-template/actions` - actions page of owner(seqan)/repository(app-template)
         `?query=branch%3Amaster` - only show actions that ran on the mater branch
 -->
-[2]: https://github.com/seqan/app-template/actions?query=branch%3Amaster
+[2]: https://github.com/seqan/app-template/actions?query=branch%3Amain
 <!--
     This is the Codecov badge image:
         Codecov offers badges: https://app.codecov.io/gh/seqan/app-template/settings/badge
