@@ -2,3 +2,7 @@
 	path = lib/seqan3
 	url = https://github.com/seqan/seqan3.git
 	branch = master
+[submodule "lib/sharg-parser"]
+	path = lib/sharg-parser
+	url = https://github.com/seqan/sharg-parser.git
+	branch = main

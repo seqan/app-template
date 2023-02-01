@@ -4,7 +4,8 @@ cmake_minimum_required (VERSION 3.16)
 # You can add more external include paths of other projects that are needed for your project.
 add_library ("${PROJECT_NAME}_interface" INTERFACE)
 target_link_libraries ("${PROJECT_NAME}_interface" INTERFACE seqan3::seqan3)
-target_include_directories ("${PROJECT_NAME}_interface" INTERFACE ../include)
+target_link_libraries ("${PROJECT_NAME}_interface" INTERFACE sharg::sharg)
+target_include_directories ("${PROJECT_NAME}_interface" INTERFACE "${CMAKE_CURRENT_LIST_DIR}/../include")
 target_compile_options ("${PROJECT_NAME}_interface" INTERFACE "-pedantic" "-Wall" "-Wextra")
 
 # An object library (without main) to be used in multiple targets.
