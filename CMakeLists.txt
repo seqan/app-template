@@ -9,9 +9,10 @@ project (app-template VERSION 1.0.0)
 
 # Make Release default build type
 if (NOT CMAKE_BUILD_TYPE)
-    set (CMAKE_BUILD_TYPE Release CACHE STRING
-         "Choose the type of build, options are: Debug Release Coverage RelWithDebInfo MinSizeRel."
-         FORCE)
+    set (CMAKE_BUILD_TYPE
+         Release
+         CACHE STRING "Choose the type of build, options are: Debug Release Coverage RelWithDebInfo MinSizeRel." FORCE
+    )
 endif ()
 
 # Specify the directories where to store the built archives, libraries and executables
@@ -24,19 +25,24 @@ string (ASCII 27 Esc)
 set (FontBold "${Esc}[1m")
 set (FontReset "${Esc}[m")
 
-# Dependency: SeqAn3.
-find_package (SeqAn3 QUIET REQUIRED HINTS lib/seqan3/build_system)
-# Dependency: Sharg.
-find_package (Sharg QUIET REQUIRED HINTS lib/sharg-parser/build_system)
+list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+set (CPM_INDENT "  CMake Package Manager CPM: ")
+include (CPM)
+include (CPMGetSystemPackage)
+CPMUsePackageLock (${CMAKE_CURRENT_LIST_DIR}/cmake/package-lock.cmake)
+
+# CPMGetSystemPackage (hibf)
+CPMGetSystemPackage (sharg)
+CPMGetSystemPackage (seqan3)
 
 # Allow to include CMake scripts from seqan3.
-list (APPEND CMAKE_MODULE_PATH "${SEQAN3_CLONE_DIR}/test/cmake/")
+list (APPEND CMAKE_MODULE_PATH "${seqan3_SOURCE_DIR}/test/cmake/")
 # Allow to include CMake scripts from the app-template.
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/test/cmake/")
 
 # Use ccache.
-include (seqan_require_ccache)
-seqan_require_ccache ()
+include (ccache)
+require_ccache ()
 
 # Add the application.
 add_subdirectory (src)
