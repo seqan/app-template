@@ -1,7 +1,17 @@
 cmake_minimum_required (VERSION 3.16)
 
+# CMake sometimes has trouble detecting pthreads on macOS, so we just assume a built-in pthreads.
+if (APPLE)
+    set (CMAKE_THREAD_LIBS_INIT "-lpthread")
+    set (CMAKE_HAVE_THREADS_LIBRARY 1)
+    set (CMAKE_USE_WIN32_THREADS_INIT 0)
+    set (CMAKE_USE_PTHREADS_INIT 1)
+    set (THREADS_PREFER_PTHREAD_FLAG ON)
+endif ()
+
 CPMGetSystemPackage (benchmark)
 CPMGetSystemPackage (googletest)
+include (GoogleTest OPTIONAL)
 
 # Set directories for test output files, input data and binaries.
 file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output)

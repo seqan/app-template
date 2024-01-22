@@ -1,11 +1,11 @@
+#pragma once
+
 #include <gtest/gtest.h>
 
 #include <cstdlib>    // system calls
 #include <filesystem> // test directory creation
 #include <sstream>    // ostringstream
 #include <string>     // strings
-
-#pragma once
 
 // Provides functions for CLI test implementation.
 struct cli_test : public ::testing::Test

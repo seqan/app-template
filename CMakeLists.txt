@@ -26,6 +26,11 @@ set (FontBold "${Esc}[1m")
 set (FontReset "${Esc}[m")
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+# Use ccache.
+include (ccache)
+require_ccache ()
+
 set (CPM_INDENT "  CMake Package Manager CPM: ")
 include (CPM)
 include (CPMGetSystemPackage)
@@ -39,10 +44,6 @@ CPMGetSystemPackage (seqan3)
 list (APPEND CMAKE_MODULE_PATH "${seqan3_SOURCE_DIR}/test/cmake/")
 # Allow to include CMake scripts from the app-template.
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/test/cmake/")
-
-# Use ccache.
-include (ccache)
-require_ccache ()
 
 # Add the application.
 add_subdirectory (src)

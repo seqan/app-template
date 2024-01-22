@@ -36,7 +36,7 @@ CPMDeclarePackage (seqan3
                    OPTIONS "INSTALL_SEQAN3 OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 # benchmark
-set (BENCHMARK_VERSION 1.8.2)
+set (BENCHMARK_VERSION 1.8.3)
 CPMDeclarePackage (benchmark
                    NAME benchmark
                    VERSION ${BENCHMARK_VERSION}
