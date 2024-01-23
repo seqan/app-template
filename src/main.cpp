@@ -29,10 +29,9 @@ int main(int argc, char ** argv)
                                     .default_message = "Print to terminal (stdout)",
                                     .validator = sharg::output_file_validator{}});
     // Example for a flag.
-    parser.add_flag(verbose,
-                    sharg::config{.short_id = 'v',
-                                  .long_id = "verbose",
-                                  .description = "Give more detailed information."});
+    parser.add_flag(
+        verbose,
+        sharg::config{.short_id = 'v', .long_id = "verbose", .description = "Give more detailed information."});
 
     try
     {

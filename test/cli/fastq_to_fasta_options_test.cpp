@@ -1,6 +1,6 @@
-#include <ranges>                // range comparisons
-#include <string>                // strings
-#include <vector>                // vectors
+#include <ranges> // range comparisons
+#include <string> // strings
+#include <vector> // vectors
 
 #include <seqan3/alphabet/detail/debug_stream_alphabet.hpp>
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
@@ -13,17 +13,15 @@
 #include "cli_test.hpp"
 
 // To prevent issues when running multiple CLI tests in parallel, give each CLI test unique names:
-struct fastq_to_fasta : public cli_test {};
+struct fastq_to_fasta : public cli_test
+{};
 
 TEST_F(fastq_to_fasta, no_options)
 {
     cli_test_result result = execute_app("app-template");
-    std::string expected
-    {
-        "Fastq-to-Fasta-Converter\n"
-        "========================\n"
-        "    Try -h or --help for more information.\n"
-    };
+    std::string expected{"Fastq-to-Fasta-Converter\n"
+                         "========================\n"
+                         "    Try -h or --help for more information.\n"};
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, expected);
     EXPECT_EQ(result.err, std::string{});
@@ -32,11 +30,8 @@ TEST_F(fastq_to_fasta, no_options)
 TEST_F(fastq_to_fasta, fail_no_argument)
 {
     cli_test_result result = execute_app("app-template", "-v");
-    std::string expected
-    {
-        "Parsing error. Not enough positional arguments provided (Need at least 1). "
-        "See -h/--help for more information.\n"
-    };
+    std::string expected{"Parsing error. Not enough positional arguments provided (Need at least 1). "
+                         "See -h/--help for more information.\n"};
     EXPECT_NE(result.exit_code, 0);
     EXPECT_EQ(result.out, std::string{});
     EXPECT_EQ(result.err, expected);

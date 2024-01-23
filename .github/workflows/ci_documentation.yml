@@ -1,0 +1,63 @@
+name: Documentation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: documentation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' }}
+
+env:
+  TZ: Europe/Berlin
+
+defaults:
+  run:
+    shell: bash -Eexuo pipefail {0}
+
+jobs:
+  build:
+    name: Documentation
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Install CMake
+        uses: seqan/actions/setup-cmake@main
+        with:
+          cmake: 3.21.7
+
+      - name: Install Doxygen
+        uses: seqan/actions/setup-doxygen@main
+        with:
+          doxygen: 1.9.8
+
+      - name: Configure
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+
+      - name: Build documentation
+        run: |
+          cd build
+          make -k -j${{ matrix.test_threads }} doc 2>doxygen_warnings.txt
+          cat doxygen_warnings.txt
+          test ! -s doxygen_warnings.txt
+
+      - name: Package documentation
+        continue-on-error: true
+        run: tar -zcf documentation.tar.gz build/doc/html
+
+      - name: Upload documentation
+        continue-on-error: true
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: documentation.tar.gz

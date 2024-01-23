@@ -1,33 +1,23 @@
 cmake_minimum_required (VERSION 3.16)
 
+# CMake sometimes has trouble detecting pthreads on macOS, so we just assume a built-in pthreads.
+if (APPLE)
+    set (CMAKE_THREAD_LIBS_INIT "-lpthread")
+    set (CMAKE_HAVE_THREADS_LIBRARY 1)
+    set (CMAKE_USE_WIN32_THREADS_INIT 0)
+    set (CMAKE_USE_PTHREADS_INIT 1)
+    set (THREADS_PREFER_PTHREAD_FLAG ON)
+endif ()
+
+CPMGetSystemPackage (benchmark)
+CPMGetSystemPackage (googletest)
+include (GoogleTest OPTIONAL)
+
 # Set directories for test output files, input data and binaries.
 file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output)
 add_definitions (-DOUTPUTDIR=\"${CMAKE_CURRENT_BINARY_DIR}/output/\")
 add_definitions (-DDATADIR=\"${CMAKE_CURRENT_BINARY_DIR}/data/\")
 add_definitions (-DBINDIR=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/\")
-
-# Define cmake configuration flags to configure and build external projects with the same flags as specified for
-# this project.
-# We also pass the C_COMPILER such that googletest is built with the corresponding GCC.
-# Otherwise, it might happen that the app is built with, e.g., g++-11, but gtest with gcc-7, which might cause trouble.
-set (SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "")
-list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}")
-list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}")
-list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
-list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}")
-list (APPEND SEQAN3_EXTERNAL_PROJECT_CMAKE_ARGS "-DCMAKE_VERBOSE_MAKEFILE=${CMAKE_VERBOSE_MAKEFILE}")
-set (SEQAN3_TEST_CLONE_DIR "${PROJECT_BINARY_DIR}/vendor/googletest")
-
-include (seqan3_require_test)
-seqan3_require_test ()
-
-# Build tests just before their execution, because they have not been built with "all" target.
-# The trick is here to provide a cmake file as a directory property that executes the build command.
-file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake"
-            "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target api_test)\n"
-            "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target cli_test)\n"
-            "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target header_test)\n")
-set_directory_properties (PROPERTIES TEST_INCLUDE_FILE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake")
 
 # Test executables and libraries should not mix with the application files.
 unset (CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
@@ -35,6 +25,30 @@ unset (CMAKE_LIBRARY_OUTPUT_DIRECTORY)
 unset (CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 
 include (seqan3_test_component)
+
+add_library (${PROJECT_NAME}_test INTERFACE)
+target_compile_options (${PROJECT_NAME}_test INTERFACE "-pedantic" "-Wall" "-Wextra" "-Werror")
+
+# GCC12 and above: Disable warning about std::hardware_destructive_interference_size not being ABI-stable.
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
+        target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-interference-size")
+    endif ()
+endif ()
+
+# GCC12 has some bogus warnings. They will not be fixed in googletest.
+# https://github.com/google/googletest/issues/4232
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12 AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
+        target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-restrict")
+    endif ()
+endif ()
+
+target_link_libraries (${PROJECT_NAME}_test INTERFACE "${PROJECT_NAME}_lib" "GTest::gtest_main"
+                                                      "benchmark::benchmark_main"
+)
+target_include_directories (${PROJECT_NAME}_test INTERFACE "${seqan3_SOURCE_DIR}/test/include")
+add_library (${PROJECT_NAME}::test ALIAS ${PROJECT_NAME}_test)
 
 # A macro that adds an api or cli test.
 macro (add_app_test test_filename)
@@ -45,11 +59,7 @@ macro (add_app_test test_filename)
 
     # Create the test target.
     add_executable (${target} ${test_filename})
-    target_link_libraries (${target} "${PROJECT_NAME}_lib" seqan3::seqan3 gtest gtest_main)
-
-    # Make seqan3::test available for both cli and api tests.
-    target_include_directories (${target} PUBLIC "${SEQAN3_CLONE_DIR}/test/include")
-    target_include_directories (${target} PUBLIC "${SEQAN3_TEST_CLONE_DIR}/googletest/include/")
+    target_link_libraries (${target} ${PROJECT_NAME}::test)
 
     # Generate and set the test name.
     add_test (NAME "${test_name}" COMMAND ${target})
@@ -59,17 +69,30 @@ macro (add_app_test test_filename)
     unset (test_name)
 endmacro ()
 
-string (TOUPPER ${PROJECT_NAME} uppercase_project_name)
-set (${uppercase_project_name}_HEADER_TEST_ONLY OFF CACHE BOOL "Only build header test.")
+# Build tests just before their execution, because they have not been built with "all" target.
+# The trick is here to provide a cmake file as a directory property that executes the build command.
+file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake"
+      "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target api_test)\n"
+      "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target cli_test)\n"
+      "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ${PROJECT_NAME}_header_test)\n"
+)
+set_directory_properties (PROPERTIES TEST_INCLUDE_FILE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake")
+list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
-if (${uppercase_project_name}_HEADER_TEST_ONLY)
-    add_subdirectory (header)
-else ()
-    # Fetch data and add the tests.
-    include (data/datasources.cmake)
-    add_subdirectory (api)
-    add_subdirectory (cli)
-    add_subdirectory (coverage)
-endif ()
+# Fetch data and add the tests.
+include (data/datasources.cmake)
+add_subdirectory (api)
+add_subdirectory (cli)
+add_subdirectory (header)
+add_subdirectory (coverage)
+
+add_custom_target (unit_test
+                   COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target api_test cli_test
+                   COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R \"api/ \|cli/\"
+)
+add_custom_target (header_test
+                   COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ${PROJECT_NAME}_header_test
+                   COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R \"header\"
+)
 
 message (STATUS "${FontBold}You can run `make test` to build and run tests.${FontReset}")
