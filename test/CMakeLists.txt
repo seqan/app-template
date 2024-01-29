@@ -1,5 +1,10 @@
 cmake_minimum_required (VERSION 3.16)
 
+# Allow to include CMake scripts from seqan3.
+list (APPEND CMAKE_MODULE_PATH "${seqan3_SOURCE_DIR}/test/cmake/")
+# Allow to include CMake scripts from the app-template.
+list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/")
+
 CPMGetSystemPackage (googletest)
 include (GoogleTest OPTIONAL)
 
@@ -39,6 +44,8 @@ target_link_libraries (${PROJECT_NAME}_test INTERFACE "${PROJECT_NAME}_lib" "GTe
 target_include_directories (${PROJECT_NAME}_test INTERFACE "${seqan3_SOURCE_DIR}/test/include")
 add_library (${PROJECT_NAME}::test ALIAS ${PROJECT_NAME}_test)
 
+add_custom_target (check COMMAND ${CMAKE_CTEST_COMMAND})
+
 # A macro that adds an api or cli test.
 macro (add_app_test test_filename)
     # Extract the test target name.
@@ -52,36 +59,39 @@ macro (add_app_test test_filename)
 
     # Generate and set the test name.
     add_test (NAME "${test_name}" COMMAND ${target})
+    add_dependencies (check ${target})
 
     unset (source_file)
     unset (target)
     unset (test_name)
 endmacro ()
 
-# Build tests just before their execution, because they have not been built with "all" target.
-# The trick is here to provide a cmake file as a directory property that executes the build command.
-file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake"
-      "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target api_test)\n"
-      "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target cli_test)\n"
-      "execute_process (COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ${PROJECT_NAME}_header_test)\n"
-)
-set_directory_properties (PROPERTIES TEST_INCLUDE_FILE "${CMAKE_CURRENT_BINARY_DIR}/build_test_targets.cmake")
-list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
-
 # Fetch data and add the tests.
 include (data/datasources.cmake)
+
+add_custom_target (api_test ALL)
+
+macro (add_api_test test_filename)
+    add_app_test (${test_filename})
+
+    seqan3_test_component (target "${test_filename}" TARGET_NAME)
+    add_dependencies (api_test ${target})
+endmacro ()
+
 add_subdirectory (api)
+
+add_custom_target (cli_test ALL)
+
+macro (add_cli_test test_filename)
+    add_app_test (${test_filename})
+
+    seqan3_test_component (target "${test_filename}" TARGET_NAME)
+    add_dependencies (cli_test ${target})
+    add_dependencies (${target} "${PROJECT_NAME}")
+endmacro ()
+
 add_subdirectory (cli)
 add_subdirectory (header)
 add_subdirectory (coverage)
 
-add_custom_target (unit_test
-                   COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target api_test cli_test
-                   COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R \"api/ \|cli/\"
-)
-add_custom_target (header_test
-                   COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ${PROJECT_NAME}_header_test
-                   COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R \"header\"
-)
-
-message (STATUS "${FontBold}You can run `make test` to build and run tests.${FontReset}")
+message (STATUS "${FontBold}You can run `make check` to build and run tests.${FontReset}")

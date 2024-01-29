@@ -25,6 +25,7 @@ string (ASCII 27 Esc)
 set (FontBold "${Esc}[1m")
 set (FontReset "${Esc}[m")
 
+# Allow to include CMake scripts from the app-template.
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # Use ccache.
@@ -40,16 +41,12 @@ CPMUsePackageLock (${CMAKE_CURRENT_LIST_DIR}/cmake/package-lock.cmake)
 CPMGetSystemPackage (sharg)
 CPMGetSystemPackage (seqan3)
 
-# Allow to include CMake scripts from seqan3.
-list (APPEND CMAKE_MODULE_PATH "${seqan3_SOURCE_DIR}/test/cmake/")
-# Allow to include CMake scripts from the app-template.
-list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/test/cmake/")
-
 # Add the application.
 add_subdirectory (src)
 message (STATUS "${FontBold}You can run `make` to build the application.${FontReset}")
 
 ## TEST
 
+list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
 enable_testing ()
 add_subdirectory (test EXCLUDE_FROM_ALL)
