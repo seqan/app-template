@@ -2,11 +2,11 @@
 
 #include <gtest/gtest.h>
 
-#include <cstdlib>    
-#include <filesystem> 
-#include <fstream>    
-#include <sstream>    
-#include <string>     
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 // Checks for CLI test result for success, and prints the command line call if the test fails.
 #ifndef EXPECT_SUCCESS
@@ -19,7 +19,7 @@
 #endif
 
 // Provides functions for CLI test implementation.
-struct cli_test : public ::testing::Test
+struct app_test : public ::testing::Test
 {
 private:
     // Holds the original work directory where Gtest has been started.
@@ -27,7 +27,7 @@ private:
 
 public:
     // Result struct for captured streams and exit code.
-    struct cli_test_result
+    struct app_test_result
     {
         std::string out{};
         std::string err{};
@@ -37,9 +37,9 @@ public:
 
     // Invoke the app execution. The command line call should be given as separate parameters.
     template <typename... CommandItemTypes>
-    cli_test_result execute_app(CommandItemTypes &&... command_items)
+    app_test_result execute_app(CommandItemTypes &&... command_items)
     {
-        cli_test_result result{};
+        app_test_result result{};
 
         // Assemble the command string and disable version check.
         result.command = [&command_items...]()

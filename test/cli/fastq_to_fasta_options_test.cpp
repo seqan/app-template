@@ -1,12 +1,12 @@
-#include "cli_test.hpp"
+#include "../app_test.hpp"
 
 // To prevent issues when running multiple CLI tests in parallel, give each CLI test unique names:
-struct fastq_to_fasta : public cli_test
+struct fastq_to_fasta : public app_test
 {};
 
 TEST_F(fastq_to_fasta, no_options)
 {
-    cli_test_result const result = execute_app("app-template");
+    app_test_result const result = execute_app("app-template");
     std::string_view const expected{"Fastq-to-Fasta-Converter\n"
                                     "========================\n"
                                     "    Try -h or --help for more information.\n"};
@@ -18,7 +18,7 @@ TEST_F(fastq_to_fasta, no_options)
 
 TEST_F(fastq_to_fasta, fail_no_argument)
 {
-    cli_test_result const result = execute_app("app-template", "-v");
+    app_test_result const result = execute_app("app-template", "-v");
     std::string_view const expected{"Parsing error. Not enough positional arguments provided (Need at least 1). "
                                     "See -h/--help for more information.\n"};
 
@@ -29,7 +29,7 @@ TEST_F(fastq_to_fasta, fail_no_argument)
 
 TEST_F(fastq_to_fasta, with_argument)
 {
-    cli_test_result const result = execute_app("app-template", data("in.fastq"));
+    app_test_result const result = execute_app("app-template", data("in.fastq"));
 
     EXPECT_SUCCESS(result);
     EXPECT_EQ(result.out, ">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n");
@@ -38,7 +38,7 @@ TEST_F(fastq_to_fasta, with_argument)
 
 TEST_F(fastq_to_fasta, with_argument_verbose)
 {
-    cli_test_result const result = execute_app("app-template", data("in.fastq"), "-v");
+    app_test_result const result = execute_app("app-template", data("in.fastq"), "-v");
 
     EXPECT_SUCCESS(result);
     EXPECT_EQ(result.out, ">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n");
@@ -47,8 +47,9 @@ TEST_F(fastq_to_fasta, with_argument_verbose)
 
 TEST_F(fastq_to_fasta, with_out_file)
 {
-    cli_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "out.fasta");
+    app_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "out.fasta");
     std::string const expected = string_from_file(data("out.fasta"));
+    ASSERT_TRUE(std::filesystem::exists("out.fasta")); // check whether out.fasta exists
     std::string const actual = string_from_file("out.fasta");
 
     EXPECT_SUCCESS(result);
@@ -59,7 +60,7 @@ TEST_F(fastq_to_fasta, with_out_file)
 
 TEST_F(fastq_to_fasta, missing_path)
 {
-    cli_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "");
+    app_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "");
 
     EXPECT_FAILURE(result);
     EXPECT_EQ(result.out, "");
@@ -68,7 +69,7 @@ TEST_F(fastq_to_fasta, missing_path)
 
 TEST_F(fastq_to_fasta, invalid_path)
 {
-    cli_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "does_not_exist/out.fasta");
+    app_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "does_not_exist/out.fasta");
 
     EXPECT_FAILURE(result);
     EXPECT_EQ(result.out, "");
