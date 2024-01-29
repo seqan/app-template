@@ -71,7 +71,7 @@ jobs:
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                    -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
-          make -j3 gtest_main benchmark_main yaml-cpp
+          make -j3 gtest_main yaml-cpp
 
       - name: Build application
         run: |

@@ -1,15 +1,5 @@
 cmake_minimum_required (VERSION 3.16)
 
-# CMake sometimes has trouble detecting pthreads on macOS, so we just assume a built-in pthreads.
-if (APPLE)
-    set (CMAKE_THREAD_LIBS_INIT "-lpthread")
-    set (CMAKE_HAVE_THREADS_LIBRARY 1)
-    set (CMAKE_USE_WIN32_THREADS_INIT 0)
-    set (CMAKE_USE_PTHREADS_INIT 1)
-    set (THREADS_PREFER_PTHREAD_FLAG ON)
-endif ()
-
-CPMGetSystemPackage (benchmark)
 CPMGetSystemPackage (googletest)
 include (GoogleTest OPTIONAL)
 
@@ -45,7 +35,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif ()
 
 target_link_libraries (${PROJECT_NAME}_test INTERFACE "${PROJECT_NAME}_lib" "GTest::gtest_main"
-                                                      "benchmark::benchmark_main"
 )
 target_include_directories (${PROJECT_NAME}_test INTERFACE "${seqan3_SOURCE_DIR}/test/include")
 add_library (${PROJECT_NAME}::test ALIAS ${PROJECT_NAME}_test)

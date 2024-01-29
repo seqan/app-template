@@ -64,7 +64,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          make -j2 gtest_main benchmark_main yaml-cpp
+          make -j2 gtest_main yaml-cpp
 
       - name: Build tests
         env:

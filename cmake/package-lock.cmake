@@ -35,16 +35,6 @@ CPMDeclarePackage (seqan3
                    SYSTEM TRUE
                    OPTIONS "INSTALL_SEQAN3 OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
-# benchmark
-set (BENCHMARK_VERSION 1.8.3)
-CPMDeclarePackage (benchmark
-                   NAME benchmark
-                   VERSION ${BENCHMARK_VERSION}
-                   GITHUB_REPOSITORY google/benchmark
-                   SYSTEM TRUE
-                   OPTIONS "BENCHMARK_ENABLE_TESTING OFF" "BENCHMARK_ENABLE_WERROR OFF"
-                           "CMAKE_MESSAGE_LOG_LEVEL WARNING"
-)
 # googletest
 set (GOOGLETEST_VERSION 1.14.0)
 CPMDeclarePackage (googletest
