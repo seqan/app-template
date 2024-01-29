@@ -14,6 +14,7 @@ file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output)
 add_definitions (-DOUTPUTDIR=\"${CMAKE_CURRENT_BINARY_DIR}/output/\")
 add_definitions (-DDATADIR=\"${CMAKE_CURRENT_BINARY_DIR}/data/\")
 add_definitions (-DBINDIR=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/\")
+add_definitions (-DAPPNAME=\"${PROJECT_NAME}\")
 
 # Test executables and libraries should not mix with the application files.
 # This must happen after setting the output directories.
