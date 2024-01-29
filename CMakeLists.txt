@@ -49,10 +49,6 @@ list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/test/cmake/")
 add_subdirectory (src)
 message (STATUS "${FontBold}You can run `make` to build the application.${FontReset}")
 
-## DOCUMENTATION
-
-add_subdirectory (doc EXCLUDE_FROM_ALL)
-
 ## TEST
 
 enable_testing ()
