@@ -10,7 +10,8 @@ TEST(convert_fastq, out_empty)
     std::string_view const expected{">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n"};
 
     testing::internal::CaptureStdout();
-    convert_fastq(cli_test::data("in.fastq"), "");
+    configuration const config{.fastq_input = cli_test::data("in.fastq")};
+    convert_fastq(config);
     std::string const std_cout = testing::internal::GetCapturedStdout();
 
     EXPECT_EQ(expected, std_cout);
@@ -22,7 +23,8 @@ TEST(convert_fastq, out_not_empty)
     seqan3::test::tmp_directory const tmp_dir{};
 
     std::filesystem::path const test_output = tmp_dir.path() / "out.fasta";
-    convert_fastq(cli_test::data("in.fastq"), test_output); // create out.fasta
+    configuration const config{.fastq_input = cli_test::data("in.fastq"), .fasta_output = test_output};
+    convert_fastq(config); // create out.fasta
 
     ASSERT_TRUE(std::filesystem::exists(test_output)); // check whether out.fasta exists
 

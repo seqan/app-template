@@ -56,3 +56,22 @@ TEST_F(fastq_to_fasta, with_out_file)
     EXPECT_EQ(result.err, "");
     EXPECT_EQ(actual, expected);
 }
+
+TEST_F(fastq_to_fasta, missing_path)
+{
+    cli_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "");
+
+    EXPECT_FAILURE(result);
+    EXPECT_EQ(result.out, "");
+    EXPECT_EQ(result.err, "Parsing error. Missing value for option -o\n");
+}
+
+TEST_F(fastq_to_fasta, invalid_path)
+{
+    cli_test_result const result = execute_app("app-template", data("in.fastq"), "-o", "does_not_exist/out.fasta");
+
+    EXPECT_FAILURE(result);
+    EXPECT_EQ(result.out, "");
+    EXPECT_EQ(result.err,
+              "Parsing error. Validation failed for option -o/--output: Cannot write \"does_not_exist/out.fasta\"!\n");
+}

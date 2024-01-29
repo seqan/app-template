@@ -1,36 +1,35 @@
-#include <sstream>
-
 #include <sharg/all.hpp>
 
 #include "fastq_conversion.hpp"
 
 int main(int argc, char ** argv)
 {
-    sharg::parser parser{"Fastq-to-Fasta-Converter", argc, argv};
-
-    // Declarations for argument parser
-    std::filesystem::path fastq_file{};
-    std::filesystem::path output_file{};
-    bool verbose = false;
+    // Configuration
+    configuration config{};
 
     // Parser
-    // Give the parser some infos.
+    sharg::parser parser{"Fastq-to-Fasta-Converter", argc, argv};
+
+    // General information.
     parser.info.author = "SeqAn-Team";
     parser.info.version = "1.0.0";
-    // Takes a fastq file and validates it.
-    parser.add_positional_option(fastq_file,
-                                 sharg::config{.description = "Please provide a fastq file.",
+
+    // Positional option: The FASTQ file to convert.
+    parser.add_positional_option(config.fastq_input,
+                                 sharg::config{.description = "The FASTQ file to convert.",
                                                .validator = sharg::input_file_validator{{"fq", "fastq"}}});
-    // Takes an output path, default is printing it to the terminal.
-    parser.add_option(output_file,
+
+    // Open: Output FASTA file. Default: print to terminal - handled in fastq_conversion.cpp.
+    parser.add_option(config.fasta_output,
                       sharg::config{.short_id = 'o',
                                     .long_id = "output",
-                                    .description = "The file for fasta output.",
+                                    .description = "The output FASTA file.",
                                     .default_message = "Print to terminal (stdout)",
                                     .validator = sharg::output_file_validator{}});
-    // Example for a flag.
+
+    // Flag: Verose output.
     parser.add_flag(
-        verbose,
+        config.verbose,
         sharg::config{.short_id = 'v', .long_id = "verbose", .description = "Give more detailed information."});
 
     try
@@ -43,9 +42,9 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-    convert_fastq(fastq_file, output_file); // Call fastq to fasta converter.
+    convert_fastq(config); // Call fastq to fasta converter.
 
-    if (verbose) // If flag is set.
+    if (config.verbose) // If flag is set.
         std::cerr << "Conversion was a success. Congrats!\n";
 
     return 0;
