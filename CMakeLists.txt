@@ -32,6 +32,7 @@ list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include (ccache)
 require_ccache ()
 
+# Add packages.
 set (CPM_INDENT "  CMake Package Manager CPM: ")
 include (CPM)
 include (CPMGetSystemPackage)
@@ -46,7 +47,6 @@ add_subdirectory (src)
 message (STATUS "${FontBold}You can run `make` to build the application.${FontReset}")
 
 ## TEST
-
 list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
 enable_testing ()
 add_subdirectory (test EXCLUDE_FROM_ALL)
