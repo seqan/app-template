@@ -2,10 +2,21 @@
 
 #include <gtest/gtest.h>
 
-#include <cstdlib>    // system calls
-#include <filesystem> // test directory creation
-#include <sstream>    // ostringstream
-#include <string>     // strings
+#include <cstdlib>    
+#include <filesystem> 
+#include <fstream>    
+#include <sstream>    
+#include <string>     
+
+// Checks for CLI test result for success, and prints the command line call if the test fails.
+#ifndef EXPECT_SUCCESS
+#    define EXPECT_SUCCESS(arg) EXPECT_EQ(arg.exit_code, 0) << "Command: " << arg.command
+#endif
+
+// Checks the exit code of a CLI test result for failure, and prints the command line call if the test fails.
+#ifndef EXPECT_FAILURE
+#    define EXPECT_FAILURE(arg) EXPECT_NE(arg.exit_code, 0) << "Command: " << arg.command
+#endif
 
 // Provides functions for CLI test implementation.
 struct cli_test : public ::testing::Test
@@ -14,12 +25,13 @@ private:
     // Holds the original work directory where Gtest has been started.
     std::filesystem::path original_workdir{};
 
-protected:
+public:
     // Result struct for captured streams and exit code.
     struct cli_test_result
     {
         std::string out{};
         std::string err{};
+        std::string command{};
         int exit_code{};
     };
 
@@ -30,17 +42,20 @@ protected:
         cli_test_result result{};
 
         // Assemble the command string and disable version check.
-        std::ostringstream command{};
-        command << "SEQAN3_NO_VERSION_CHECK=1 " << BINDIR;
-        int a[] = {0, ((void)(command << command_items << ' '), 0)...};
-        (void)a;
+        result.command = [&command_items...]()
+        {
+            std::ostringstream command{};
+            command << "SHARG_NO_VERSION_CHECK=1 " << BINDIR;
+            (void)((command << command_items << ' '), ...); // (void) silences "state has no effect" warning if no items
+            return command.str();
+        }();
 
         // Always capture the output streams.
         testing::internal::CaptureStdout();
         testing::internal::CaptureStderr();
 
         // Run the command and return results.
-        result.exit_code = std::system(command.str().c_str());
+        result.exit_code = std::system(result.command.c_str());
         result.out = testing::internal::GetCapturedStdout();
         result.err = testing::internal::GetCapturedStderr();
         return result;
@@ -50,6 +65,18 @@ protected:
     static std::filesystem::path data(std::string const & filename)
     {
         return std::filesystem::path{std::string{DATADIR}}.concat(filename);
+    }
+
+    // Read the contents of a file into a string.
+    static std::string const string_from_file(std::filesystem::path const & path,
+                                              std::ios_base::openmode const mode = std::ios_base::in)
+    {
+        std::ifstream file_stream(path, mode);
+        if (!file_stream.is_open())
+            throw std::logic_error{"Cannot open " + path.string()};
+        std::stringstream file_buffer;
+        file_buffer << file_stream.rdbuf();
+        return {file_buffer.str()};
     }
 
     // Create an individual work directory for the current test.

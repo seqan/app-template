@@ -2,3 +2,4 @@ cmake_minimum_required (VERSION 3.16)
 
 add_app_test (convert_fastq_test.cpp)
 target_use_datasources (convert_fastq_test FILES in.fastq)
+target_use_datasources (convert_fastq_test FILES out.fasta)
