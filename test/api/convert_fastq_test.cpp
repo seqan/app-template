@@ -1,39 +1,34 @@
 #include <gtest/gtest.h>
 
-#include <seqan3/alphabet/detail/debug_stream_alphabet.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/io/sequence_file/input.hpp>
-#include <seqan3/test/expect_range_eq.hpp>
-
+#include "../app_test.hpp"
 #include "fastq_conversion.hpp"
 
-TEST(group1, out_empty)
+// To prevent issues when running multiple API tests in parallel, give each API test unique names:
+struct fastq_to_fasta : public app_test
+{};
+
+TEST_F(fastq_to_fasta, out_empty)
 {
-    std::string expected{">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n"};
+    std::string_view const expected{">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n"};
+
     testing::internal::CaptureStdout();
-    convert_fastq(DATADIR "in.fastq", "");
-    std::string std_cout = testing::internal::GetCapturedStdout();
-    EXPECT_RANGE_EQ(expected, std_cout);
+    configuration const config{.fastq_input = data("in.fastq")};
+    convert_fastq(config);
+    std::string const std_cout = testing::internal::GetCapturedStdout();
+
+    EXPECT_EQ(expected, std_cout);
 }
 
-TEST(group1, out_not_empty)
+TEST_F(fastq_to_fasta, out_not_empty)
 {
-    std::filesystem::path tmp_dir = std::filesystem::temp_directory_path(); // get the temp directory
-    convert_fastq(DATADIR "in.fastq", tmp_dir / "out.fasta");               // create out.fasta
+    std::filesystem::path const test_output = "out.fasta";
+    configuration const config{.fastq_input = data("in.fastq"), .fasta_output = test_output};
+    convert_fastq(config); // create out.fasta
 
-    // Check if out.fasta is correct
-    using seqan3::operator""_dna5;
-    std::vector<seqan3::dna5_vector> expected_seqs = {"ACGTTTGATTCGCG"_dna5, "TCGGGGGATTCGCG"_dna5};
-    std::vector<std::string> expected_ids{"seq1", "seq2"};
-    std::vector<seqan3::dna5_vector> seqs{};
-    std::vector<std::string> ids{};
-    seqan3::sequence_file_input fin{tmp_dir / "out.fasta"};
+    ASSERT_TRUE(std::filesystem::exists(test_output)); // check whether out.fasta exists
 
-    for (auto & [seq, id, qual] : fin)
-    {
-        ids.push_back(id);
-        seqs.push_back(seq);
-    }
-    EXPECT_RANGE_EQ(seqs, expected_seqs);
-    EXPECT_RANGE_EQ(ids, expected_ids);
+    // Check whether out.fasta is correct
+    std::string const expected = string_from_file(data("out.fasta"));
+    std::string const actual = string_from_file(test_output);
+    EXPECT_EQ(actual, expected);
 }

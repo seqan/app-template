@@ -5,8 +5,9 @@ include (seqan3_test_component)
 
 add_library ("${PROJECT_NAME}_header_test_lib" INTERFACE)
 target_link_libraries ("${PROJECT_NAME}_header_test_lib" INTERFACE "${PROJECT_NAME}_test")
-# SeqAn3 script adds an include for <bechmark/benchmark.h>
-target_include_directories ("${PROJECT_NAME}_header_test_lib" INTERFACE ./dummy_include)
+# SeqAn3 script adds an include for <benchmark/benchmark.h>
+file (WRITE "${PROJECT_BINARY_DIR}/dummy_include/benchmark/benchmark.h" "#pragma once")
+target_include_directories ("${PROJECT_NAME}_header_test_lib" INTERFACE "${PROJECT_BINARY_DIR}/dummy_include")
 set (target "${PROJECT_NAME}_header_test")
 
 set (header_base_path "${CMAKE_CURRENT_LIST_DIR}/../../include/")
@@ -20,6 +21,7 @@ file (WRITE "${PROJECT_BINARY_DIR}/${target}.cpp" "")
 add_executable (${target} ${PROJECT_BINARY_DIR}/${target}.cpp)
 target_link_libraries (${target} ${PROJECT_NAME}_header_test_lib)
 add_test (NAME "${target}" COMMAND ${target})
+add_dependencies (check ${target})
 
 foreach (header ${header_files})
     seqan3_test_component (header_test_name "${header}" TEST_NAME)

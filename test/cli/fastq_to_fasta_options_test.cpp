@@ -1,72 +1,78 @@
-#include <ranges> // range comparisons
-#include <string> // strings
-#include <vector> // vectors
-
-#include <seqan3/alphabet/detail/debug_stream_alphabet.hpp>
-#include <seqan3/alphabet/nucleotide/dna5.hpp>
-#include <seqan3/core/debug_stream/tuple.hpp>
-#include <seqan3/io/sequence_file/input.hpp>
-
-// Include the EXPECT_RANGE_EQ macro for better information if range elements differ.
-#include <seqan3/test/expect_range_eq.hpp>
-
-#include "cli_test.hpp"
+#include "../app_test.hpp"
 
 // To prevent issues when running multiple CLI tests in parallel, give each CLI test unique names:
-struct fastq_to_fasta : public cli_test
+struct fastq_to_fasta : public app_test
 {};
 
 TEST_F(fastq_to_fasta, no_options)
 {
-    cli_test_result result = execute_app("app-template");
-    std::string expected{"Fastq-to-Fasta-Converter\n"
-                         "========================\n"
-                         "    Try -h or --help for more information.\n"};
-    EXPECT_EQ(result.exit_code, 0);
+    app_test_result const result = execute_app();
+    std::string_view const expected{"Fastq-to-Fasta-Converter\n"
+                                    "========================\n"
+                                    "    Try -h or --help for more information.\n"};
+
+    EXPECT_SUCCESS(result);
     EXPECT_EQ(result.out, expected);
-    EXPECT_EQ(result.err, std::string{});
+    EXPECT_EQ(result.err, "");
 }
 
 TEST_F(fastq_to_fasta, fail_no_argument)
 {
-    cli_test_result result = execute_app("app-template", "-v");
-    std::string expected{"Parsing error. Not enough positional arguments provided (Need at least 1). "
-                         "See -h/--help for more information.\n"};
-    EXPECT_NE(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{});
+    app_test_result const result = execute_app("-v");
+    std::string_view const expected{"Parsing error. Not enough positional arguments provided (Need at least 1). "
+                                    "See -h/--help for more information.\n"};
+
+    EXPECT_FAILURE(result);
+    EXPECT_EQ(result.out, "");
     EXPECT_EQ(result.err, expected);
 }
 
 TEST_F(fastq_to_fasta, with_argument)
 {
-    cli_test_result result = execute_app("app-template", data("in.fastq"));
-    EXPECT_EQ(result.exit_code, 0);
+    app_test_result const result = execute_app(data("in.fastq"));
+
+    EXPECT_SUCCESS(result);
     EXPECT_EQ(result.out, ">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n");
-    EXPECT_EQ(result.err, std::string{});
+    EXPECT_EQ(result.err, "");
 }
 
 TEST_F(fastq_to_fasta, with_argument_verbose)
 {
-    cli_test_result result = execute_app("app-template", data("in.fastq"), "-v");
-    EXPECT_EQ(result.exit_code, 0);
+    app_test_result const result = execute_app(data("in.fastq"), "-v");
+
+    EXPECT_SUCCESS(result);
     EXPECT_EQ(result.out, ">seq1\nACGTTTGATTCGCG\n>seq2\nTCGGGGGATTCGCG\n");
     EXPECT_EQ(result.err, "Conversion was a success. Congrats!\n");
 }
 
 TEST_F(fastq_to_fasta, with_out_file)
 {
-    cli_test_result result = execute_app("app-template", data("in.fastq"), "-o", "out.fasta");
-    seqan3::sequence_file_input fin{"out.fasta", seqan3::fields<seqan3::field::seq, seqan3::field::id>{}};
+    app_test_result const result = execute_app(data("in.fastq"), "-o", "out.fasta");
+    std::string const expected = string_from_file(data("out.fasta"));
+    ASSERT_TRUE(std::filesystem::exists("out.fasta")); // check whether out.fasta exists
+    std::string const actual = string_from_file("out.fasta");
 
-    // create records to compare
-    using record_type = typename decltype(fin)::record_type;
-    using seqan3::operator""_dna5;
-    std::vector<record_type> records{};
-    records.emplace_back("ACGTTTGATTCGCG"_dna5, std::string{"seq1"});
-    records.emplace_back("TCGGGGGATTCGCG"_dna5, std::string{"seq2"});
+    EXPECT_SUCCESS(result);
+    EXPECT_EQ(result.out, "");
+    EXPECT_EQ(result.err, "");
+    EXPECT_EQ(actual, expected);
+}
 
-    EXPECT_RANGE_EQ(fin, records);
-    EXPECT_EQ(result.exit_code, 0);
-    EXPECT_EQ(result.out, std::string{});
-    EXPECT_EQ(result.err, std::string{});
+TEST_F(fastq_to_fasta, missing_path)
+{
+    app_test_result const result = execute_app(data("in.fastq"), "-o", "");
+
+    EXPECT_FAILURE(result);
+    EXPECT_EQ(result.out, "");
+    EXPECT_EQ(result.err, "Parsing error. Missing value for option -o\n");
+}
+
+TEST_F(fastq_to_fasta, invalid_path)
+{
+    app_test_result const result = execute_app(data("in.fastq"), "-o", "does_not_exist/out.fasta");
+
+    EXPECT_FAILURE(result);
+    EXPECT_EQ(result.out, "");
+    EXPECT_EQ(result.err,
+              "Parsing error. Validation failed for option -o/--output: Cannot write \"does_not_exist/out.fasta\"!\n");
 }

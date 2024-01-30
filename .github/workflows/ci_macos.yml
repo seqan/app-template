@@ -71,14 +71,14 @@ jobs:
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                    -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
-          make -j3 gtest_main benchmark_main yaml-cpp
+          make -j3 -k gtest_main yaml-cpp
 
       - name: Build application
         run: |
           cd build
-          CMAKE_BUILD_PARALLEL_LEVEL=3 cmake --build . -- -k
+          make -j3 -k
 
       - name: Build and run tests
         run: |
           cd build
-          CMAKE_BUILD_PARALLEL_LEVEL=3 cmake --build . -- -k test
+          make -j3 -k check

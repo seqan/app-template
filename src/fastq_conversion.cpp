@@ -2,12 +2,12 @@
 
 #include <seqan3/io/sequence_file/all.hpp>
 
-void convert_fastq(std::filesystem::path const fastq_file, std::filesystem::path const out)
+void convert_fastq(configuration const & config)
 {
-    seqan3::sequence_file_input fin{fastq_file};
-    seqan3::sequence_file_output fout{std::cout, seqan3::format_fasta{}};
-    if (!out.empty()) // If an output path is given
-        fout = out;
+    seqan3::sequence_file_input file_input{config.fastq_input};
+    seqan3::sequence_file_output file_output{std::cout, seqan3::format_fasta{}};
+    if (!config.fasta_output.empty())
+        file_output = config.fasta_output;
 
-    fout = fin; // conversion
+    file_output = file_input; // conversion
 }
