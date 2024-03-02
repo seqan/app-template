@@ -6,31 +6,28 @@
 # This file should be committed to version control
 
 # hibf
-set (HIBF_VERSION 2075a68d10f571399b5ff885f0b4cb2c94845601)
+set (HIBF_VERSION 894f663c7b77f28cc2b1b8f4252e51c052c49bb2)
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION}
-                   VERSION 1.0.0 # Pretty-print only
                    GITHUB_REPOSITORY seqan/hibf
                    SYSTEM TRUE
                    OPTIONS "INSTALL_HIBF OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 # sharg
-set (SHARG_VERSION 3e96d37387125bd876ace3fdd11a20039ed0d21c)
+set (SHARG_VERSION 01f848eeb6dbac3d50a718a8ee26bcf695edf5a8)
 CPMDeclarePackage (sharg
                    NAME sharg
                    GIT_TAG ${SHARG_VERSION}
-                   VERSION 1.1.2 # Pretty-print only
                    GITHUB_REPOSITORY seqan/sharg-parser
                    SYSTEM TRUE
                    OPTIONS "INSTALL_SHARG OFF" "INSTALL_TDL OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 # seqan3
-set (SEQAN3_VERSION ee718d0d3bbf07a894b5208d37ddf71ba5a5bf44)
+set (SEQAN3_VERSION fee3fb8e5976b455e848dd68c57f64fd3f67c3c2)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION}
-                   VERSION 3.1.2 # Pretty-print only
                    GITHUB_REPOSITORY seqan/seqan3
                    SYSTEM TRUE
                    OPTIONS "INSTALL_SEQAN3 OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
