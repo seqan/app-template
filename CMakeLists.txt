@@ -9,6 +9,9 @@ cmake_minimum_required (VERSION 3.16)
 # Define the application name and version.
 project (app-template VERSION 1.0.0)
 
+# Needed for CPM
+find_package (Git REQUIRED)
+
 ## BUILD
 
 # Make Release default build type
@@ -42,7 +45,7 @@ include (CPM)
 include (CPMGetSystemPackage)
 CPMUsePackageLock (${CMAKE_CURRENT_LIST_DIR}/cmake/package-lock.cmake)
 
-# CPMGetSystemPackage (hibf)
+CPMGetSystemPackage (hibf)
 CPMGetSystemPackage (sharg)
 CPMGetSystemPackage (seqan3)
 
@@ -51,6 +54,9 @@ add_subdirectory (src)
 message (STATUS "${FontBold}You can run `make` to build the application.${FontReset}")
 
 ## TEST
-list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
-enable_testing ()
-add_subdirectory (test EXCLUDE_FROM_ALL)
+option (${PROJECT_NAME}_TEST "Enable testing for ${PROJECT_NAME}." ON)
+if (${PROJECT_NAME}_TEST)
+    list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
+    enable_testing ()
+    add_subdirectory (test EXCLUDE_FROM_ALL)
+endif ()
