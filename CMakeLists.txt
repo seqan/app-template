@@ -4,59 +4,30 @@
 
 cmake_minimum_required (VERSION 3.16)
 
-## CUSTOMISE
-
 # Define the application name and version.
-project (app-template VERSION 1.0.0)
+project (app-template LANGUAGES CXX VERSION 1.0.0)
 
-# Needed for CPM
-find_package (Git REQUIRED)
+## Provides possible dependencies
+include (cmake/CPM.cmake)
 
-## BUILD
+CPMAddPackage("gh:SGSSGene/CMakeUseCCache@1.0.0")
+require_ccache()
 
-# Make Release default build type
-if (NOT CMAKE_BUILD_TYPE)
-    set (CMAKE_BUILD_TYPE
-         Release
-         CACHE STRING "Choose the type of build, options are: Debug Release Coverage RelWithDebInfo MinSizeRel." FORCE
-    )
-endif ()
+CPMAddPackage("gh:seqan/hibf#2075a68d10f571399b5ff885f0b4cb2c94845601")
+CPMAddPackage("gh:seqan/sharg-parser#3e96d37387125bd876ace3fdd11a20039ed0d21c")
+CPMAddPackage("gh:seqan/seqan3#ee718d0d3bbf07a894b5208d37ddf71ba5a5bf44")
+CPMAddPackage("gh:SGSSGene/fmindex-collection#432d00176ef872e55fc58d6506a48030b8a32239")
 
-# Specify the directories where to store the built archives, libraries and executables
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-# Messages
-string (ASCII 27 Esc)
-set (FontBold "${Esc}[1m")
-set (FontReset "${Esc}[m")
-
-# Allow to include CMake scripts from the app-template.
-list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
-# Use ccache.
-include (ccache)
-require_ccache ()
-
-# Add packages.
-set (CPM_INDENT "  CMake Package Manager CPM: ")
-include (CPM)
-include (CPMGetSystemPackage)
-CPMUsePackageLock (${CMAKE_CURRENT_LIST_DIR}/cmake/package-lock.cmake)
-
-CPMGetSystemPackage (hibf)
-CPMGetSystemPackage (sharg)
-CPMGetSystemPackage (seqan3)
-
-# Add the application.
-add_subdirectory (src)
-message (STATUS "${FontBold}You can run `make` to build the application.${FontReset}")
-
-## TEST
-option (${PROJECT_NAME}_TEST "Enable testing for ${PROJECT_NAME}." ON)
-if (${PROJECT_NAME}_TEST)
-    list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
-    enable_testing ()
-    add_subdirectory (test EXCLUDE_FROM_ALL)
-endif ()
+# Add all translation units (cpp files) of your program
+add_executable (fmindex-tool
+    src/main.cpp
+    src/index.cpp
+    src/search.cpp
+)
+target_link_libraries (fmindex-tool PRIVATE
+    seqan3::seqan3
+    seqan::hibf
+    sharg::sharg
+    fmindex-collection::fmindex-collection
+)

@@ -4,52 +4,30 @@
 
 #include <sharg/all.hpp>
 
-#include "fastq_conversion.hpp"
+void index(sharg::parser&);
+void search(sharg::parser&);
 
-int main(int argc, char ** argv)
-{
-    // Configuration
-    configuration config{};
+int main(int argc, char ** argv) {
+    try {
+        // Parser
+        sharg::parser parser{"fmindex-tool", argc, argv, sharg::update_notifications::off, {"index", "search"}};
 
-    // Parser
-    sharg::parser parser{"Fastq-to-Fasta-Converter", argc, argv};
+        // General information.
+        parser.info.author = "SeqAn-Team";
+        parser.info.version = "1.0.0";
 
-    // General information.
-    parser.info.author = "SeqAn-Team";
-    parser.info.version = "1.0.0";
-
-    // Positional option: The FASTQ file to convert.
-    parser.add_positional_option(config.fastq_input,
-                                 sharg::config{.description = "The FASTQ file to convert.",
-                                               .validator = sharg::input_file_validator{{"fq", "fastq"}}});
-
-    // Open: Output FASTA file. Default: print to terminal - handled in fastq_conversion.cpp.
-    parser.add_option(config.fasta_output,
-                      sharg::config{.short_id = 'o',
-                                    .long_id = "output",
-                                    .description = "The output FASTA file.",
-                                    .default_message = "Print to terminal (stdout)",
-                                    .validator = sharg::output_file_validator{}});
-
-    // Flag: Verose output.
-    parser.add_flag(
-        config.verbose,
-        sharg::config{.short_id = 'v', .long_id = "verbose", .description = "Give more detailed information."});
-
-    try
-    {
         parser.parse(); // Trigger command line parsing.
-    }
-    catch (sharg::parser_error const & ext) // Catch user errors.
-    {
-        std::cerr << "Parsing error. " << ext.what() << '\n'; // Give error message.
+
+        auto& subparser = parser.get_sub_parser();
+        if (subparser.info.app_name == "fmindex-tool-index") {
+            index(subparser);
+        } else if (subparser.info.app_name == "fmindex-tool-search") {
+            search(subparser);
+        }
+    } catch (std::exception const& e) {
+        std::cerr << "Exception: " << e.what() << '\n';
         return -1;
     }
-
-    convert_fastq(config); // Call fastq to fasta converter.
-
-    if (config.verbose) // If flag is set.
-        std::cerr << "Conversion was a success. Congrats!\n";
 
     return 0;
 }

@@ -65,15 +65,13 @@ Probably you want to name your app differently — simply replace `app-template`
 Please note that the command line interface tests fail if you use an individual project name without adapting the
 name in the test file.
 
-For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109). 
+For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109).
 Note: The subsequent steps, e.g., Directory Structure, are not necessary.
 
 ## Instructions:
 1. clone this repository: `git clone https://github.com/seqan/app-template.git`
 2. Optional: edit the project name in the *project* command of `app-template/CMakeLists.txt`
-3. create a build directory and visit it: `mkdir build && cd build`
+3. create a build directory and visit it: `mkdir build && cd $_`
 4. run cmake: `cmake ../app-template`
 5. build the application: `make`
-6. optional: build and run the tests: `make check`
-7. execute the app: `./bin/app-template`, or the new project name you set in 2 (`./bin/my_project`).
-8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy
+7. execute the app: `./fastq_converter`
