@@ -61,35 +61,9 @@ function (declare_datasource)
                          TEST_COMMAND ""
                          PREFIX "${CMAKE_CURRENT_BINARY_DIR}/_datasources"
                          DOWNLOAD_NO_EXTRACT TRUE # don't extract archive files like .tar.gz.
+                         EXCLUDE_FROM_ALL TRUE
                          ${ARG_UNPARSED_ARGUMENTS}
     )
-endfunction ()
 
-# Example call:
-#
-# ```cmake
-# # my_app uses and needs the files RF00001.fa.gz, pdb100d.ent.gz, and GRCh38_latest_clinvar.vcf.gz.
-# target_use_datasources (my_app FILES RF00001.fa.gz pdb100d.ent.gz GRCh38_latest_clinvar.vcf.gz)
-# ```
-#
-# Options:
-#
-# target_use_datasources (<target> FILES <file1> [<file2>...])
-#
-# It declares that a <target> uses and depends on the following files.
-#
-# This also sets the build requirement that the files must be downloaded before the <target> will be build.
-#
-# The named <target> must have been created by a command such as add_executable() or add_library().
-function (target_use_datasources target)
-    set (options "")
-    set (one_value_args)
-    set (multi_value_args "FILES")
-
-    cmake_parse_arguments (ARG "${options}" "${one_value_args}" "${multi_value_args}" ${ARGN})
-
-    foreach (filename ${ARG_FILES})
-        string (TOLOWER "datasource--${filename}" datasource_name)
-        add_dependencies ("${target}" "${datasource_name}")
-    endforeach ()
+    add_dependencies (${PROJECT_NAME}_test "${datasource_name}")
 endfunction ()
