@@ -15,6 +15,7 @@ CPMDeclarePackage (hibf
                    EXCLUDE_FROM_ALL TRUE
                    OPTIONS "INSTALL_HIBF OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
+
 # sharg
 set (SHARG_VERSION 01f848eeb6dbac3d50a718a8ee26bcf695edf5a8)
 CPMDeclarePackage (sharg
@@ -25,6 +26,7 @@ CPMDeclarePackage (sharg
                    EXCLUDE_FROM_ALL TRUE
                    OPTIONS "INSTALL_SHARG OFF" "INSTALL_TDL OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
+
 # seqan3
 set (SEQAN3_VERSION fee3fb8e5976b455e848dd68c57f64fd3f67c3c2)
 CPMDeclarePackage (seqan3
@@ -35,6 +37,18 @@ CPMDeclarePackage (seqan3
                    EXCLUDE_FROM_ALL TRUE
                    OPTIONS "INSTALL_SEQAN3 OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
+
+# fmindex
+set (FMINDEX_VERSION 822d4d1aa6fa725f7d34e1ea819e9c23a2b6ebc2)
+CPMDeclarePackage (fmindex
+                   NAME fmindex
+                   GIT_TAG ${FMINDEX_VERSION}
+                   GITHUB_REPOSITORY SGSSGene/fmindex-collection
+                   SYSTEM TRUE
+                   EXCLUDE_FROM_ALL TRUE
+                   OPTIONS "CMAKE_MESSAGE_LOG_LEVEL WARNING"
+)
+
 # googletest
 set (GOOGLETEST_VERSION 1.14.0)
 CPMDeclarePackage (googletest
@@ -45,6 +59,7 @@ CPMDeclarePackage (googletest
                    EXCLUDE_FROM_ALL TRUE
                    OPTIONS "BUILD_GMOCK OFF" "INSTALL_GTEST OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
+
 # use_ccache
 set (USE_CCACHE_VERSION d2a54ef555b6fc2d496a4c9506dbeb7cf899ce37)
 CPMDeclarePackage (use_ccache

@@ -19,7 +19,7 @@ include (output_directories)
 
 # Add packages.
 # We use CPM for package management: https://github.com/cpm-cmake/CPM.cmake
-# The added packages (hibf, sharg, seqan3) are defined in the `cmake/package-lock.cmake` file.
+# The added packages (e.g., hibf, sharg, seqan3) are defined in the `cmake/package-lock.cmake` file.
 include (CPM)
 CPMUsePackageLock (${CMAKE_CURRENT_LIST_DIR}/cmake/package-lock.cmake)
 
@@ -28,6 +28,7 @@ CPMGetPackage (use_ccache)
 CPMGetPackage (hibf)
 CPMGetPackage (sharg)
 CPMGetPackage (seqan3)
+CPMGetPackage (fmindex)
 
 # Add the application. This will include `src/CMakeLists.txt`.
 add_subdirectory (src)
