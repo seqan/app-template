@@ -32,8 +32,6 @@ jobs:
         include:
           - name: "gcc13"
             compiler: "gcc-13"
-            build: coverage
-            build_type: Coverage
 
     steps:
       # How many commits do we need to fetch to also fetch the branch point?
@@ -56,7 +54,7 @@ jobs:
       - name: Install CMake
         uses: seqan/actions/setup-cmake@main
         with:
-          cmake: 3.21.7
+          cmake: 3.25.3
 
       - name: Install gcovr
         run: |
@@ -67,12 +65,14 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          cmake .. -DCMAKE_BUILD_TYPE=Debug \
+                   -DCMAKE_CXX_FLAGS="--coverage -fprofile-arcs -ftest-coverage -Werror" \
+                   -DCMAKE_C_FLAGS="--coverage -fprofile-arcs -ftest-coverage -Werror" \
+                   -DCMAKE_EXE_LINKER_FLAGS="-Wl,-lgcov" \
+                   -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-lgcov"
           make -j2 -k gtest_main yaml-cpp
 
       - name: Build tests
-        env:
-          CCACHE_IGNOREOPTIONS: "-fprofile-abs-path"
         run: |
           ccache -z
           cd build
@@ -82,7 +82,7 @@ jobs:
       - name: Generate coverage report
         run: |
           gcovr --gcov-executable ${{ github.workspace }}/.github/workflows/scripts/gcov.sh \
-                --root ${{ github.workspace }}/test/coverage \
+                --root ${{ github.workspace }}/test \
                 ${{ github.workspace }}/build \
                 --filter ${{ github.workspace }}/include \
                 --filter ${{ github.workspace }}/src \

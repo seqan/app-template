@@ -12,6 +12,7 @@ CPMDeclarePackage (hibf
                    GIT_TAG ${HIBF_VERSION}
                    GITHUB_REPOSITORY seqan/hibf
                    SYSTEM TRUE
+                   EXCLUDE_FROM_ALL TRUE
                    OPTIONS "INSTALL_HIBF OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 # sharg
@@ -21,6 +22,7 @@ CPMDeclarePackage (sharg
                    GIT_TAG ${SHARG_VERSION}
                    GITHUB_REPOSITORY seqan/sharg-parser
                    SYSTEM TRUE
+                   EXCLUDE_FROM_ALL TRUE
                    OPTIONS "INSTALL_SHARG OFF" "INSTALL_TDL OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 # seqan3
@@ -30,6 +32,7 @@ CPMDeclarePackage (seqan3
                    GIT_TAG ${SEQAN3_VERSION}
                    GITHUB_REPOSITORY seqan/seqan3
                    SYSTEM TRUE
+                   EXCLUDE_FROM_ALL TRUE
                    OPTIONS "INSTALL_SEQAN3 OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 # googletest
@@ -39,5 +42,6 @@ CPMDeclarePackage (googletest
                    VERSION ${GOOGLETEST_VERSION}
                    GITHUB_REPOSITORY google/googletest
                    SYSTEM TRUE
+                   EXCLUDE_FROM_ALL TRUE
                    OPTIONS "BUILD_GMOCK OFF" "INSTALL_GTEST OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )

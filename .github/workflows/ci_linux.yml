@@ -67,14 +67,14 @@ jobs:
       - name: Install CMake
         uses: seqan/actions/setup-cmake@main
         with:
-          cmake: 3.21.7
+          cmake: 3.25.3
 
       - name: Configure
         run: |
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-                   -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
+                   -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }} -Werror"
           make -j2 -k gtest_main yaml-cpp
 
       - name: Build application

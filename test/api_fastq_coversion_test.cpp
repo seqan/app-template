@@ -4,8 +4,9 @@
 
 #include <gtest/gtest.h>
 
-#include "../app_test.hpp"
-#include "fastq_conversion.hpp"
+#include <fastq_conversion.hpp>
+
+#include "app_test.hpp"
 
 // To prevent issues when running multiple API tests in parallel, give each API test unique names:
 struct fastq_to_fasta : public app_test
