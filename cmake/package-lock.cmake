@@ -45,3 +45,13 @@ CPMDeclarePackage (googletest
                    EXCLUDE_FROM_ALL TRUE
                    OPTIONS "BUILD_GMOCK OFF" "INSTALL_GTEST OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
+# use_ccache
+set (USE_CCACHE_VERSION d2a54ef555b6fc2d496a4c9506dbeb7cf899ce37)
+CPMDeclarePackage (use_ccache
+                   NAME use_ccache
+                   GIT_TAG ${USE_CCACHE_VERSION}
+                   GITHUB_REPOSITORY seqan/cmake-scripts
+                   SOURCE_SUBDIR ccache
+                   SYSTEM TRUE
+                   EXCLUDE_FROM_ALL TRUE
+)
