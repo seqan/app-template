@@ -11,10 +11,9 @@ on:
 
 concurrency:
   group: coverage-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name != 'push' }}
 
 env:
-  SHARG_NO_VERSION_CHECK: 1
   TZ: Europe/Berlin
 
 defaults:
@@ -34,16 +33,10 @@ jobs:
             compiler: "gcc-13"
 
     steps:
-      # How many commits do we need to fetch to also fetch the branch point?
-      - name: Get fetch depth
-        id: fetch_depth
-        run: echo "depth=$(( ${{ github.event.pull_request.commits }} + 2 ))" >> $GITHUB_OUTPUT
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: ${{ steps.fetch_depth.outputs.depth }}
-          submodules: false
+          fetch-depth: 0
 
       - name: Setup toolchain
         uses: seqan/actions/setup-toolchain@main
@@ -61,7 +54,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/${CC/gcc/gcov} 100
           pip install gcovr==6.0
 
-      - name: Configure tests
+      - name: Configure
         run: |
           mkdir build
           cd build
@@ -70,24 +63,19 @@ jobs:
                    -DCMAKE_C_FLAGS="--coverage -fprofile-arcs -ftest-coverage -Werror" \
                    -DCMAKE_EXE_LINKER_FLAGS="-Wl,-lgcov" \
                    -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-lgcov"
-          make -j2 -k gtest_main yaml-cpp
 
-      - name: Build tests
+      - name: Build and run tests
         run: |
-          ccache -z
           cd build
           make -j2 -k check
-          ccache -sv
 
       - name: Generate coverage report
         run: |
           gcovr --gcov-executable ${{ github.workspace }}/.github/workflows/scripts/gcov.sh \
-                --root ${{ github.workspace }}/test \
+                --root ${{ github.workspace }} \
                 ${{ github.workspace }}/build \
                 --filter ${{ github.workspace }}/include \
                 --filter ${{ github.workspace }}/src \
-                --exclude-lines-by-pattern '^\s*$' \
-                --exclude-lines-by-pattern '^\s*};$' \
                 --exclude-unreachable-branches \
                 --exclude-throw-branches \
                 --exclude-noncode-lines \

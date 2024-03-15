@@ -14,7 +14,6 @@ concurrency:
   cancel-in-progress: ${{ github.event_name != 'push' }}
 
 env:
-  SHARG_NO_VERSION_CHECK: 1
   TZ: Europe/Berlin
 
 defaults:
@@ -32,31 +31,24 @@ jobs:
         include:
           - name: "clang17"
             compiler: "clang-17"
-            build: unit
             build_type: Release
             cxx_flags: "-stdlib=libc++" # For verbosity. This is already the default.
 
           - name: "gcc13"
             compiler: "gcc-13"
-            build: unit
             build_type: Release
 
           - name: "gcc12"
             compiler: "gcc-12"
-            build: unit
             build_type: Release
 
           - name: "gcc11"
             compiler: "gcc-11"
-            build: unit
             build_type: Release
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          submodules: false
 
       - name: Setup toolchain
         uses: seqan/actions/setup-toolchain@main
@@ -75,12 +67,6 @@ jobs:
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
                    -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }} -Werror"
-          make -j3 -k gtest_main yaml-cpp
-
-      - name: Build application
-        run: |
-          cd build
-          make -j3 -k
 
       - name: Build and run tests
         run: |
