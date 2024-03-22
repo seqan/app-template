@@ -67,13 +67,13 @@ Note: The subsequent steps, e.g., Directory Structure, are not necessary.
 If you want to build an app, do the following:
 
 0. You need to be singed in with a **Github account**.
-1. <details><summary> Press the <code>Use this template</code>-Button to create your <b>own repository</b>. </summary><br>
+1. <details><summary>Press the <code>Use this template</code>-Button to create your <b>own repository</b>. </summary><br>
 
    Screenshot TODO
 
    </details>
-2. Clone your repository locally: `git clone git@github.com:max/my-repo-name.git`
-3. <details><summary>Adapt the project name in `my-repo-name/CMakeLists.txt`, e.g. from `app-template` to `MyDragonApp`</summary><br>
+2. **Clone** your repository locally: `git clone git@github.com:max/my-repo-name.git`
+3. <details><summary>Adapt the project name in <code>my-repo-name/CMakeLists.txt</code>, e.g. from <code>app-template</code> to <code>MyDragonApp</code></summary><br>
 
    The project name is defined in these lines:
 
@@ -96,15 +96,15 @@ If you want to build an app, do the following:
    ```
 
    </details>
-4. Create a build directory and visit it: `mkdir build && cd build`
+4. Create a **build directory** and visit it: `mkdir build && cd build`
 5. Run cmake: `cmake ../my-repo-name`
-6. Build the application: `make`
-7. <details><summary>Build and run the tests: <code>make check</code> </summary><br>
+6. **Build** the application: `make`
+7. <details><summary>Build and run the <b>tests</b>: <code>make check</code> </summary><br>
 
    Important Note: If you changed the project name, then some tests might fail because they test that name and its not `app-template` anymore.
 
    </details>
-8. Execute the app: `./bin/MyDragonApp`.
+8. **Execute** the app: `./bin/MyDragonApp`.
 <!-- 8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy -->
 
 
