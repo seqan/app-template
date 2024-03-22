@@ -56,8 +56,8 @@ SPDX-License-Identifier: CC0-1.0
 [4]: https://codecov.io/gh/seqan/app-template
 
 This is a template for C++ app developers.
-You can easily use this template and modify the existing code to your needs.
-It provides an elementary cmake set-up, some useful SeqAn libraries and an example application.
+You can easily use this template and modify the existing code to suit your needs.
+It provides an elementary CMake set-up, some useful SeqAn libraries, and an example application.
 
 For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109).
 
@@ -65,17 +65,16 @@ For requirements, check the [Software section of the SeqAn3 Quick Setup](https:/
 
 If you want to build an app, do the following:
 
-0. You need to be singed in with a **Github account**.
-1. <details><summary>Press the <code>Use this template</code>-Button to create your <b>own repository</b>. </summary><br>
+0. You need to be signed in with a **GitHub account**.
+1. <details><summary>Press the <code>Use this template</code>-Button to create your <b>own repository</b>.</summary><br>
 
    Screenshot TODO
-
    </details>
 2. **Clone** your repository locally: `git clone git@github.com:max/my-repo-name.git`
 
 Note: The subsequent steps are not necessary but a recommendation and quick setup.
 
-3. <details><summary>Adapt the project name in <code>my-repo-name/CMakeLists.txt</code>, e.g. from <code>app-template</code> to <code>MyDragonApp</code></summary><br>
+3. <details><summary>Adapt the project name in <code>my-repo-name/CMakeLists.txt</code>, e.g., from <code>app-template</code> to <code>MyDragonApp</code></summary><br>
 
    The project name is defined in these lines:
 
@@ -96,7 +95,6 @@ Note: The subsequent steps are not necessary but a recommendation and quick setu
             DESCRIPTION "Let dragons fly"
    )
    ```
-
    </details>
 4. <details><summary>Build and test the app (example) </summary><br>
 
@@ -110,21 +108,16 @@ Note: The subsequent steps are not necessary but a recommendation and quick setu
     make check            # build and run tests *1
     ./bin/MyDragonApp     # Execute the app (prints a short help page)
     ```
-
-   * **Important Note**: If you changed the project name (step 3), then some tests might fail because they test that name and its not `app-template` anymore.
-
    </details>
 <!-- 8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy -->
 
-
-
-## Instructions for SeqAn3 tutorial purposes:
+## Instructions for SeqAn3 Tutorial Purposes:
 
 If you just want some hands-on experience with SeqAn Libraries or a quick setup for our tutorials, do the following:
 
 1. Clone this repository: `git clone https://github.com/seqan/app-template.git`
 2. Create a build directory and visit it: `mkdir build && cd build`
-3. Run cmake: `cmake ../app-template`
+3. Run CMake: `cmake ../app-template`
 4. Build the application: `make`
 5. Try executing the app: `./bin/app-template`
 
@@ -132,7 +125,7 @@ You can now start your hands-on experience by looking at or editing the file `sr
 
 ### Adding a new cpp file
 
-If you want to add a new cpp file (e.g. tutorial1.cpp) that is compiled and linked with the current infrastructure, do the following:
+If you want to add a new cpp file (e.g., tutorial1.cpp) that is compiled and linked with the current infrastructure, do the following:
 
 1. Create a new file `tutorial1.cpp` in the `src/` directory.
    <details><summary>The file content could look like this:</summary><br>
@@ -153,6 +146,6 @@ If you want to add a new cpp file (e.g. tutorial1.cpp) that is compiled and link
     target_link_libraries (tutorial01 PRIVATE "${PROJECT_NAME}_lib")
     ```
 3. Go to the build directory `cd build`
-4. Refresh cmake `cmake .`
+4. Refresh CMake `cmake .`
 5. Build your new cpp file `make tutorial01`
 6. Execute your new binary with `./tutorial01`
