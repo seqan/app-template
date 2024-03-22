@@ -66,12 +66,18 @@ Note: The subsequent steps, e.g., Directory Structure, are not necessary.
 
 If you want to build an app, do the following:
 
-0. You need to be singed in with a Github account and have a valid ssh-key to communicate with your repositories.
+0. You need to be singed in with a **Github account**.
 
-1. On this Github page, press the green `Use this template` Button on the top right corner and follow the instructions to create a new repository. Screenshot TODO
-2. Clone your repository (e.g. `git clone git@github.com:max/my-repo-name.git`, check Github tutorials for more detail)
-3. In your repository, adapt the project name in `my-repo-name/CMakeLists.txt`, e.g. from `app-template` to e.g. `MyDragonApp`
-   <details><summary>The project name is defined in these lines:</summary><br>
+1. <details><summary> Press the `Use this template`-Button on the [Website](https://github.com/seqan/app-template) to create your **own repository**. </summary><br>
+
+   Screenshot TODO
+
+   </details>
+2. Clone your repository locally: `git clone git@github.com:max/my-repo-name.git`
+3. <details><summary>Adapt the project name in `my-repo-name/CMakeLists.txt`, e.g. from `app-template` to `MyDragonApp`</summary><br>
+
+   The project name is defined in these lines:
+
    ```cmake
    project (app-template
             LANGUAGES CXX
@@ -79,8 +85,9 @@ If you want to build an app, do the following:
             DESCRIPTION "My application description"
    )
    ```
-   </details>
-   <details><summary>Change it e.g. to this:</summary><br>
+
+   Change it e.g. to this:
+
    ```cmake
    project (MyDragonApp
             LANGUAGES CXX
@@ -88,13 +95,17 @@ If you want to build an app, do the following:
             DESCRIPTION "Let dragons fly"
    )
    ```
+
    </details>
 4. Next to your local repository clone `my-repo-name`, create a build directory and visit it: `mkdir build && cd build`
 5. Run cmake: `cmake ../my-repo-name`
 6. Build the application: `make`
-7. Build and run the tests: `make check`
+7. <details><summary>Build and run the tests: `make check` </summary><br>
+
    Important Note: If you changed the project name, then some tests might fail because they test that name and its not `app-template` anymore.
-8. execute the app: `./bin/MyDragonApp`.
+
+   </details>
+8. Execute the app: `./bin/MyDragonApp`.
 <!-- 8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy -->
 
 
