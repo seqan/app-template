@@ -61,7 +61,7 @@ It provides an elementary CMake set-up, some useful SeqAn libraries, and an exam
 
 For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109).
 
-## Instructions for app developers:
+## Instructions for App Developers:
 
 If you want to build an app, do the following:
 
