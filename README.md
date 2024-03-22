@@ -57,10 +57,9 @@ SPDX-License-Identifier: CC0-1.0
 
 This is a template for C++ app developers.
 You can easily use this template and modify the existing code to your needs.
-It provides an elementary cmake set-up, some useful SeqAn libraries and an example appl (FastQ converter).
+It provides an elementary cmake set-up, some useful SeqAn libraries and an example application.
 
 For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109).
-Note: The subsequent steps, e.g., Directory Structure, are not necessary.
 
 ## Instructions for app developers:
 
@@ -73,6 +72,9 @@ If you want to build an app, do the following:
 
    </details>
 2. **Clone** your repository locally: `git clone git@github.com:max/my-repo-name.git`
+
+Note: The subsequent steps are not necessary but a recommendation and quick setup.
+
 3. <details><summary>Adapt the project name in <code>my-repo-name/CMakeLists.txt</code>, e.g. from <code>app-template</code> to <code>MyDragonApp</code></summary><br>
 
    The project name is defined in these lines:
