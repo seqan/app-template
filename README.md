@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: 2016-2024 Knut Reinert & MPI für molekulare Genetik
 SPDX-License-Identifier: CC0-1.0
 -->
 
-# SeqAn3 App Template [![build status][1]][2] [![codecov][3]][4]
+# SeqAn App Template [![build status][1]][2] [![codecov][3]][4]
 <!--
     Above uses reference-style links with numbers.
     See also https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links.
@@ -55,25 +55,97 @@ SPDX-License-Identifier: CC0-1.0
 -->
 [4]: https://codecov.io/gh/seqan/app-template
 
-This is a template for app developers with SeqAn3.
-You can easily clone this repository and modify the existing code to your needs.
-It provides the elementary set-up for all SeqAn3 applications.
+This is a template for C++ app developers.
+You can easily use this template and modify the existing code to suit your needs.
+It provides an elementary CMake set-up, some useful SeqAn libraries, and an example application.
 
-The example application is a FastQ to FastA file format converter.
-It demonstrates exemplarily the set-up of test cases, documentation, and build infrastructure.
-Probably you want to name your app differently — simply replace `app-template` with your app name in the following.
-Please note that the command line interface tests fail if you use an individual project name without adapting the
-name in the test file.
+For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109).
 
-For requirements, check the [Software section of the SeqAn3 Quick Setup](https://docs.seqan.de/seqan3/main_user/setup.html#autotoc_md109). 
-Note: The subsequent steps, e.g., Directory Structure, are not necessary.
+## Instructions for App Developers:
 
-## Instructions:
-1. clone this repository: `git clone https://github.com/seqan/app-template.git`
-2. Optional: edit the project name in the *project* command of `app-template/CMakeLists.txt`
-3. create a build directory and visit it: `mkdir build && cd build`
-4. run cmake: `cmake ../app-template`
-5. build the application: `make`
-6. optional: build and run the tests: `make check`
-7. execute the app: `./bin/app-template`, or the new project name you set in 2 (`./bin/my_project`).
-8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy
+If you want to build an app, do the following:
+
+0. You need to be signed in with a **GitHub account**.
+1. <details><summary>Press the <code>Use this template</code>-Button to create your <b>own repository</b>.</summary><br>
+
+   Screenshot TODO
+   </details>
+2. **Clone** your repository locally: `git clone git@github.com:max/my-repo-name.git`
+
+Note: The subsequent steps are not necessary but a recommendation and quick setup.
+
+3. <details><summary>Adapt the project name in <code>my-repo-name/CMakeLists.txt</code>, e.g., from <code>app-template</code> to <code>MyDragonApp</code></summary><br>
+
+   The project name is defined in these lines:
+
+   ```cmake
+   project (app-template
+            LANGUAGES CXX
+            VERSION 1.0.0
+            DESCRIPTION "My application description"
+   )
+   ```
+
+   Change it e.g. to this:
+
+   ```cmake
+   project (MyDragonApp
+            LANGUAGES CXX
+            VERSION 1.0.0
+            DESCRIPTION "Let dragons fly"
+   )
+   ```
+   </details>
+4. <details><summary>Build and test the app (example) </summary><br>
+
+    Next to your local repository clone (e.g. `my-repo-name`), you can do the following to build and test your app:
+
+    ```bash
+    mkdir build           # create build directory
+    cd build              # step into build directory
+    cmake ../my-repo-name # call cmake on the repository
+    make                  # build the app MyDragonApp
+    make check            # build and run tests *1
+    ./bin/MyDragonApp     # Execute the app (prints a short help page)
+    ```
+   </details>
+<!-- 8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy -->
+
+## Instructions for SeqAn3 Tutorial Purposes:
+
+If you just want some hands-on experience with SeqAn Libraries or a quick setup for our tutorials, do the following:
+
+1. Clone this repository: `git clone https://github.com/seqan/app-template.git`
+2. Create a build directory and visit it: `mkdir build && cd build`
+3. Run CMake: `cmake ../app-template`
+4. Build the application: `make`
+5. Try executing the app: `./bin/app-template`
+
+You can now start your hands-on experience by looking at or editing the file `src/main.cpp`.
+
+### Adding a new cpp file
+
+If you want to add a new cpp file (e.g., tutorial1.cpp) that is compiled and linked with the current infrastructure, do the following:
+
+1. Create a new file `tutorial1.cpp` in the `src/` directory.
+   <details><summary>The file content could look like this:</summary><br>
+       
+   ```cpp
+   #include <seqan3/core/debug_stream.hpp>
+
+   int main()
+   {
+       seqan3::debug_stream << "Hello, World!" << std::endl;
+   }
+   ```
+   </details>
+2. Add the following lines at the bottom of `src/CMakeLists.txt`
+    ```cmake
+    # Add another cpp file.
+    add_executable (tutorial01 tutorial01.cpp)
+    target_link_libraries (tutorial01 PRIVATE "${PROJECT_NAME}_lib")
+    ```
+3. Go to the build directory `cd build`
+4. Refresh CMake `cmake .`
+5. Build your new cpp file `make tutorial01`
+6. Execute your new binary with `./tutorial01`
