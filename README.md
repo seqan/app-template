@@ -136,6 +136,7 @@ If you want to add a new cpp file (e.g. tutorial1.cpp) that is compiled and link
 
 1. Create a new file `tutorial1.cpp` in the `src/` directory.
    <details><summary>The file content could look like this:</summary><br>
+       
    ```cpp
    #include <seqan3/core/debug_stream.hpp>
 
