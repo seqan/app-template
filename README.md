@@ -67,8 +67,7 @@ Note: The subsequent steps, e.g., Directory Structure, are not necessary.
 If you want to build an app, do the following:
 
 0. You need to be singed in with a **Github account**.
-
-1. <details><summary> Press the `Use this template`-Button on the [Website](https://github.com/seqan/app-template) to create your **own repository**. </summary><br>
+1. <details><summary> Press the <code>Use this template</code>-Button to create your <b>own repository</b>. </summary><br>
 
    Screenshot TODO
 
@@ -97,10 +96,10 @@ If you want to build an app, do the following:
    ```
 
    </details>
-4. Next to your local repository clone `my-repo-name`, create a build directory and visit it: `mkdir build && cd build`
+4. Create a build directory and visit it: `mkdir build && cd build`
 5. Run cmake: `cmake ../my-repo-name`
 6. Build the application: `make`
-7. <details><summary>Build and run the tests: `make check` </summary><br>
+7. <details><summary>Build and run the tests: <code>make check</code> </summary><br>
 
    Important Note: If you changed the project name, then some tests might fail because they test that name and its not `app-template` anymore.
 
