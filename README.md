@@ -98,15 +98,22 @@ Note: The subsequent steps are not necessary but a recommendation and quick setu
    ```
 
    </details>
-4. Create a **build directory** and visit it: `mkdir build && cd build`
-5. Run cmake: `cmake ../my-repo-name`
-6. **Build** the application: `make`
-7. <details><summary>Build and run the <b>tests</b>: <code>make check</code> </summary><br>
+4. <details><summary>Build and test the app (example) </summary><br>
 
-   Important Note: If you changed the project name, then some tests might fail because they test that name and its not `app-template` anymore.
+    Next to your local repository clone (e.g. `my-repo-name`), you can do the following to build and test your app:
+
+    ```bash
+    mkdir build           # create build directory
+    cd build              # step into build directory
+    cmake ../my-repo-name # call cmake on the repository
+    make                  # build the app MyDragonApp
+    make check            # build and run tests *1
+    ./bin/MyDragonApp     # Execute the app (prints a short help page)
+    ```
+
+   * **Important Note**: If you changed the project name (step 3), then some tests might fail because they test that name and its not `app-template` anymore.
 
    </details>
-8. **Execute** the app: `./bin/MyDragonApp`.
 <!-- 8. optional: publish your tool to the galaxy toolshed, follow the example in https://github.com/SGSSGene/raptor-galaxy -->
 
 
