@@ -22,42 +22,23 @@ defaults:
 
 jobs:
   build:
-    name: ${{ matrix.name }}
-    runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    runs-on: ubuntu-latest
+    name: ${{ matrix.compiler }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: "gcc13"
-            compiler: "gcc-13"
-
+        compiler: ["gcc-14"]
+    container:
+      image: ghcr.io/seqan/${{ matrix.compiler }}
+      volumes:
+        - /home/runner:/home/runner
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup toolchain
-        uses: seqan/actions/setup-toolchain@main
-        with:
-          compiler: ${{ matrix.compiler }}
-          ccache_size: 125M
-
-      - name: Install CMake
-        uses: seqan/actions/setup-cmake@main
-        with:
-          cmake: 3.25.3
-
-      - name: Install gcovr
+      - name: Configure tests
         run: |
-          sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/${CC/gcc/gcov} 100
-          pip install gcovr==6.0
-
-      - name: Configure
-        run: |
-          mkdir build
-          cd build
+          mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Debug \
                    -DCMAKE_CXX_FLAGS="--coverage -fprofile-arcs -ftest-coverage -Werror" \
                    -DCMAKE_C_FLAGS="--coverage -fprofile-arcs -ftest-coverage -Werror" \
@@ -65,26 +46,24 @@ jobs:
                    -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-lgcov"
 
       - name: Build and run tests
-        run: |
-          cd build
-          make -j2 -k check
+        working-directory: build
+        run: make -k check
 
       - name: Generate coverage report
         run: |
-          gcovr --gcov-executable ${{ github.workspace }}/.github/workflows/scripts/gcov.sh \
-                --root ${{ github.workspace }} \
-                ${{ github.workspace }}/build \
-                --filter ${{ github.workspace }}/include \
-                --filter ${{ github.workspace }}/src \
+          gcovr --root ${GITHUB_WORKSPACE} \
+                ${GITHUB_WORKSPACE}/build \
+                --filter ${GITHUB_WORKSPACE}/include \
+                --filter ${GITHUB_WORKSPACE}/src \
                 --exclude-unreachable-branches \
                 --exclude-throw-branches \
                 --exclude-noncode-lines \
-                -j 2 \
-                --xml \
-                --output ${{ github.workspace }}/build/coverage_report.xml
+                -j \
+                --cobertura \
+                --output ${GITHUB_WORKSPACE}/build/coverage_report.xml
 
       - name: Submit coverage build
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3.1.5
         with:
-          files: ${{ github.workspace }}/build/coverage_report.xml
+          files: build/coverage_report.xml
           fail_ci_if_error: false

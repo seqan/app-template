@@ -19,7 +19,7 @@ env:
 jobs:
   check:
     name: REUSE Compliance
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Checkout

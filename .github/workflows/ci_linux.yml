@@ -22,53 +22,29 @@ defaults:
 
 jobs:
   build:
-    name: ${{ matrix.name }}
-    runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    runs-on: ubuntu-latest
+    name: ${{ matrix.compiler }}
     strategy:
       fail-fast: false
       matrix:
+        compiler: ["clang-19", "clang-18", "clang-17", "gcc-14", "gcc-13", "gcc-12", "intel"]
         include:
-          - name: "clang17"
-            compiler: "clang-17"
-            build_type: Release
-            cxx_flags: "-stdlib=libc++"
-
-          - name: "gcc13"
-            compiler: "gcc-13"
-            build_type: Release
-
-          - name: "gcc12"
-            compiler: "gcc-12"
-            build_type: Release
-
-          - name: "gcc11"
-            compiler: "gcc-11"
-            build_type: Release
-
+          - compiler: "intel"
+            cxx_flags: "-fp-model=strict -Wno-overriding-option"
+    container:
+      image: ghcr.io/seqan/${{ matrix.compiler }}
+      volumes:
+        - /home/runner:/home/runner
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup toolchain
-        uses: seqan/actions/setup-toolchain@main
-        with:
-          compiler: ${{ matrix.compiler }}
-          ccache_size: 75M
-
-      - name: Install CMake
-        uses: seqan/actions/setup-cmake@main
-        with:
-          cmake: 3.25.3
-
-      - name: Configure
+      - name: Configure tests
         run: |
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }} -Werror"
 
       - name: Build and run tests
-        run: |
-          cd build
-          make -j2 -k check
+        working-directory: build
+        run: make -k check
