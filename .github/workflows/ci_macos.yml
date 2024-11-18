@@ -22,43 +22,32 @@ defaults:
 
 jobs:
   build:
-    name: ${{ matrix.name }}
-    runs-on: macos-12
-    timeout-minutes: 120
+    name: ${{ matrix.compiler }}
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: "clang17"
-            compiler: "clang-17"
-            build_type: Release
-
-          - name: "gcc13"
-            compiler: "gcc-13"
-            build_type: Release
-
-          - name: "gcc12"
-            compiler: "gcc-12"
-            build_type: Release
-
-          - name: "gcc11"
-            compiler: "gcc-11"
-            build_type: Release
-
+        compiler: ["clang-19", "clang-18", "clang-17", "gcc-14", "gcc-13", "gcc-12"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup toolchain
-        uses: seqan/actions/setup-toolchain@main
+      - name: Setup compiler
+        uses: seqan/actions/setup-compiler@main
         with:
           compiler: ${{ matrix.compiler }}
-          ccache_size: 75M
 
-      - name: Configure
+      - name: Patch M1 GCC
+        if: contains(matrix.compiler, 'gcc') && matrix.compiler != 'gcc-14'
+        uses: seqan/actions/patch-m1-gcc@main
+        with:
+          compiler: ${{ matrix.compiler }}
+
+      - name: Configure tests
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Werror"
+          cmake .. -DCMAKE_BUILD_TYPE=Release \
+                   -DCMAKE_CXX_FLAGS="-Werror"
 
       - name: Build and run tests
         working-directory: build

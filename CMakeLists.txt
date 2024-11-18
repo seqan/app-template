@@ -11,6 +11,13 @@ project (app-template
          DESCRIPTION "My application description"
 )
 
+# LTO support.
+include (CheckIPOSupported)
+check_ipo_supported (RESULT result OUTPUT output)
+if (result)
+    set (CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif ()
+
 # This allows including `*.cmake` files from the `cmake` directory without specifying the full path.
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
