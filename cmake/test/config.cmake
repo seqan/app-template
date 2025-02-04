@@ -1,5 +1,5 @@
-# SPDX-FileCopyrightText: 2006-2024 Knut Reinert & Freie Universität Berlin
-# SPDX-FileCopyrightText: 2016-2024 Knut Reinert & MPI für molekulare Genetik
+# SPDX-FileCopyrightText: 2006-2025 Knut Reinert & Freie Universität Berlin
+# SPDX-FileCopyrightText: 2016-2025 Knut Reinert & MPI für molekulare Genetik
 # SPDX-License-Identifier: CC0-1.0
 
 CPMGetPackage (googletest)
@@ -23,6 +23,11 @@ if (NOT TARGET ${PROJECT_NAME}_test)
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
             target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-interference-size")
+        endif ()
+
+        # Warn about failed return value optimization.
+        if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14)
+            target_compile_options (${PROJECT_NAME}_lib PUBLIC "-Wnrvo")
         endif ()
     endif ()
 

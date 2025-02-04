@@ -1,5 +1,5 @@
-# SPDX-FileCopyrightText: 2006-2024 Knut Reinert & Freie Universität Berlin
-# SPDX-FileCopyrightText: 2016-2024 Knut Reinert & MPI für molekulare Genetik
+# SPDX-FileCopyrightText: 2006-2025 Knut Reinert & Freie Universität Berlin
+# SPDX-FileCopyrightText: 2016-2025 Knut Reinert & MPI für molekulare Genetik
 # SPDX-License-Identifier: CC0-1.0
 
 cmake_minimum_required (VERSION 3.25)
@@ -13,7 +13,7 @@ project (app-template
 
 # LTO support.
 include (CheckIPOSupported)
-check_ipo_supported (RESULT result OUTPUT output)
+check_ipo_supported (RESULT result OUTPUT output LANGUAGES CXX)
 if (result)
     set (CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif ()
