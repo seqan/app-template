@@ -24,6 +24,11 @@ if (NOT TARGET ${PROJECT_NAME}_test)
         if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
             target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-interference-size")
         endif ()
+
+        # Warn about failed return value optimization.
+        if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14)
+            target_compile_options (${PROJECT_NAME}_lib PUBLIC "-Wnrvo")
+        endif ()
     endif ()
 
     # GCC12 has some bogus warnings. They will not be fixed in googletest.

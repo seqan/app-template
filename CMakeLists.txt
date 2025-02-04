@@ -13,7 +13,7 @@ project (app-template
 
 # LTO support.
 include (CheckIPOSupported)
-check_ipo_supported (RESULT result OUTPUT output)
+check_ipo_supported (RESULT result OUTPUT output LANGUAGES CXX)
 if (result)
     set (CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif ()
