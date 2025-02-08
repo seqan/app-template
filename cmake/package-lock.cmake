@@ -6,7 +6,7 @@
 # This file should be committed to version control
 
 # hibf
-set (HIBF_VERSION 1df6a31672362fc8dd9e28ff4d2d04cf9d108fce)
+set (HIBF_VERSION 437789756ffe7b274255b01cb06ee56d7cd0d1e6)
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -28,7 +28,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 666b87694bef9411d995e4678a26e5e9a31ca255)
+set (SEQAN3_VERSION ee18011f2f360850ced7337f5b0e170454e9398b)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION} # main
@@ -50,7 +50,7 @@ CPMDeclarePackage (fmindex
 )
 
 # googletest
-set (GOOGLETEST_VERSION 1.15.2)
+set (GOOGLETEST_VERSION 1.16.0)
 CPMDeclarePackage (googletest
                    NAME GTest
                    VERSION ${GOOGLETEST_VERSION}
