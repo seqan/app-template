@@ -6,7 +6,7 @@
 # This file should be committed to version control
 
 # hibf
-set (HIBF_VERSION 437789756ffe7b274255b01cb06ee56d7cd0d1e6)
+set (HIBF_VERSION 6e90be657750223f95c48ad439b62d8593775b77)
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -17,7 +17,7 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION d30629065de5b2160aba261d93e170cbdd7a4e36)
+set (SHARG_VERSION e9bc14ba8818f980727221dc936dbe6361eb87fd)
 CPMDeclarePackage (sharg
                    NAME sharg
                    GIT_TAG ${SHARG_VERSION} # main
@@ -28,7 +28,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION ee18011f2f360850ced7337f5b0e170454e9398b)
+set (SEQAN3_VERSION 6ec94f329edfe451e6cf5e7baa18ee4a7a0a4945)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION} # main
@@ -39,7 +39,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION 350b7aa24ffc4718a6f4df6a5d899c5a2412f352)
+set (FMINDEX_VERSION 9a822553ad57561c5df5464852f0517b2cb889a7)
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
