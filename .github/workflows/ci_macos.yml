@@ -37,9 +37,6 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
 
-      - name: Setup cache
-        uses: ./.github/actions/setup_cache
-
       - name: Configure tests
         run: |
           mkdir build && cd build
