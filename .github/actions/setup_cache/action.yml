@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2006-2025 Knut Reinert & Freie Universität Berlin
+# SPDX-FileCopyrightText: 2016-2025 Knut Reinert & MPI für molekulare Genetik
+# SPDX-License-Identifier: CC0-1.0
+
+name: 'Setup Cache'
+description: 'Sets up caches'
+inputs:
+  ccache_size:
+    description: "The ccache maximum size."
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Get Directories
+      id: directories
+      shell: bash
+      run: |
+        echo "ccache=${CCACHE_DIR}" >> $GITHUB_OUTPUT
+        echo "cpm=${CPM_SOURCE_CACHE}" >> $GITHUB_OUTPUT
+        if [[ -n "${{ inputs.ccache_size }}" ]]; then
+          echo "CCACHE_MAXSIZE=${{ inputs.ccache_size }}" >> "$GITHUB_ENV"
+        fi
+
+    - name: Load ccache
+      if: runner.os != 'macOS'
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.directories.outputs.ccache }}
+        key: ccache-${{ runner.os }}-${{ github.workflow }}-${{ matrix.compiler }}-${{ github.ref }}-${{ github.run_id }}
+        restore-keys: |
+          ccache-${{ runner.os }}-${{ github.workflow }}-${{ matrix.compiler }}-${{ github.ref }}
+          ccache-${{ runner.os }}-${{ github.workflow }}-${{ matrix.compiler }}
+
+    - name: Load dependency cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.directories.outputs.cpm }}
+        key: cpm-${{ hashfiles('cmake/package-lock.cmake') }}

@@ -32,10 +32,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup compiler
-        uses: seqan/actions/setup-compiler@main
+      - name: Setup toolchain
+        uses: seqan/actions/setup-toolchain@main
         with:
           compiler: ${{ matrix.compiler }}
+
+      - name: Setup cache
+        uses: ./.github/actions/setup_cache
 
       - name: Configure tests
         run: |
