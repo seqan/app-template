@@ -24,7 +24,7 @@ CPMDeclarePackage (sharg
                    GITHUB_REPOSITORY seqan/sharg-parser
                    SYSTEM TRUE
                    EXCLUDE_FROM_ALL TRUE
-                   OPTIONS "INSTALL_SHARG OFF" "INSTALL_TDL OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
+                   OPTIONS "INSTALL_SHARG OFF" "INSTALL_TDL OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING" "SHARG_NO_TDL ON"
 )
 
 # seqan3
