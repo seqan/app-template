@@ -58,7 +58,7 @@ jobs:
                 ${GITHUB_WORKSPACE}/build \
                 --filter ${GITHUB_WORKSPACE}/include \
                 --filter ${GITHUB_WORKSPACE}/src \
-                --exclude-lines-by-pattern '^\s*}|^\s*};' \
+                --exclude-lines-by-pattern '^\s*}|^\s*};|^\s*\.[^\s]+\s*=\s*\".*\"' \
                 --exclude-noncode-lines \
                 --exclude-throw-branches \
                 --exclude-unreachable-branches \
@@ -67,8 +67,12 @@ jobs:
                 --cobertura \
                 --output ${GITHUB_WORKSPACE}/build/coverage_report.xml
 
+      # https://docs.codecov.com/docs/adding-the-codecov-token
       - name: Submit coverage build
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v5.4.0
         with:
-          files: build/coverage_report.xml
+          disable_search: true
           fail_ci_if_error: false
+          files: build/coverage_report.xml
+          plugins: noop
+          token: ${{ secrets.CODECOV_TOKEN }}
