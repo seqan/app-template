@@ -10,5 +10,5 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-ignore:
-  - dependency-name: "PuneetMatharu/cmake-format-lint-action"
+    ignore:
+      - dependency-name: "PuneetMatharu/cmake-format-lint-action"

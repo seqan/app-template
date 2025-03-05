@@ -67,12 +67,15 @@ If you want to build an app, do the following:
 
 0. You need to be signed in with a **GitHub account**.
 1. Press the `Use this template`-Button to create your own repository. See [GitHub's documentation](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) for more information.
-2. **Wait** for GitHub actions to create a commit in your new repository. The commit message will be `Initialise repository` and it will placeholders in the code. Afterwards, the README in your repository will be customised to your repository, among other things.
+2. **Wait** for GitHub actions to create a commit in your new repository. The commit message will be `Initialise repository` and it will replace placeholders in the code. Afterwards, the README in your repository will be customised to your repository, among other things.
 <!-- InitDelete -->
 ---
 ### :warning: Important :warning:
 
 From here on out, follow the instructions in your repository.
+
+You will probably need to reload your repository page to see the changes.
+
 The instructions below are for the template repository and will not work for your repository.
 
 ---
@@ -110,7 +113,7 @@ If you just some quick hands-on experience with SeqAn Libraries, you can also ju
 If you want to add a new cpp file (e.g., `tutorial1.cpp`) that is compiled and linked with the current infrastructure, do the following:
 
 1. Create a new file `tutorial1.cpp` in the `src/` directory.
-   <details><summary>The file content could look like this:</summary
+   <details><summary>The file content could look like this:</summary>
 
    ```cpp
    #include <seqan3/core/debug_stream.hpp>
