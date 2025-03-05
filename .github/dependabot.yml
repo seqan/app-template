@@ -6,8 +6,9 @@
 
 version: 2
 updates:
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+ignore:
+  - dependency-name: "PuneetMatharu/cmake-format-lint-action"

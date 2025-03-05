@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2006-2025 Knut Reinert & Freie Universität Berlin
+# SPDX-FileCopyrightText: 2016-2025 Knut Reinert & MPI für molekulare Genetik
+# SPDX-License-Identifier: CC0-1.0
+
+name: Initialise
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  TZ: Europe/Berlin
+
+defaults:
+  run:
+    shell: bash -Eeuxo pipefail {0}
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || (github.event.repository.name != 'app-template' && github.event.created)
+    name: Initialise
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialise
+        run: |
+          for file in $(git grep -l '${PROJECT_NAME}'); do sed -i 's/${PROJECT_NAME}/${{ github.event.repository.name }}/g' "${file}"; done
+          for file in $(git grep -l 'seqan/app-template'); do sed -i 's@seqan/app-template@${{ github.repository }}@g' "${file}"; done
+          for file in $(git grep -l 'app-template'); do sed -i 's/app-template/${{ github.event.repository.name }}/g' "${file}"; done
+
+          sed -i 's/# SeqAn App Template/# ${{ github.event.repository.name }}/' README.md
+          sed -i 's/App-Template%20CI/${{ github.event.repository.name }}%20CI/g' README.md
+          sed -i '/<!-- InitDelete -->/,/<!-- DeleteInit -->/d' README.md
+
+          git checkout test/data/datasources.cmake
+          git checkout .github/workflows/*
+          rm .github/workflows/initialise.yml
+          rm .github/workflows/ci_cpm.yml
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Initialise repository'
