@@ -19,7 +19,7 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION e9bc14ba8818f980727221dc936dbe6361eb87fd CACHE STRING "" FORCE)
+set (SHARG_VERSION da92d2314e9fedba0e1d9d317b5977360dae8ac9 CACHE STRING "" FORCE)
 CPMDeclarePackage (sharg
                    NAME sharg
                    GIT_TAG ${SHARG_VERSION} # main
@@ -30,7 +30,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 7e0d88d15fc82b8b8a5548f6eebea8602faf6446 CACHE STRING "" FORCE)
+set (SEQAN3_VERSION 9a07fdb5283aad0b05301905bddb2d8253f5e067 CACHE STRING "" FORCE)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION} # main
