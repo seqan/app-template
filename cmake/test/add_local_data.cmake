@@ -9,7 +9,7 @@ file (GLOB_RECURSE datasources
       RELATIVE ${DATASOURCES_DATA_DIR}
       CONFIGURE_DEPENDS ${DATASOURCES_DATA_DIR}/*
 )
-list (REMOVE_ITEM datasources datasources.cmake README.md)
+list (REMOVE_ITEM datasources datasources.cmake README.md REUSE.toml)
 list (FILTER datasources EXCLUDE REGEX "\.license")
 
 foreach (datasource IN LISTS datasources)

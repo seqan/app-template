@@ -13,7 +13,10 @@ project (app-template
 
 # LTO support.
 include (CheckIPOSupported)
-check_ipo_supported (RESULT result OUTPUT output LANGUAGES CXX)
+check_ipo_supported (RESULT result
+                     OUTPUT output
+                     LANGUAGES CXX
+)
 if (result)
     set (CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif ()
@@ -30,18 +33,19 @@ include (output_directories)
 include (CPM)
 CPMUsePackageLock (${CMAKE_CURRENT_LIST_DIR}/cmake/package-lock.cmake)
 
-# Use ccache if available. This speeds up the build process by caching files that have been compiled before.
-CPMGetPackage (use_ccache)
-CPMGetPackage (hibf)
-CPMGetPackage (sharg)
-CPMGetPackage (seqan3)
-CPMGetPackage (fmindex)
+CPMGetPackage (use_ccache) # Speeds up compilation by caching files that have been compiled before.
+
+# Comment/Uncomment entries as needed.
+# If you change something here, make sure to add/remove the target in target_link_libraries of src/CMakeLists.txt.
+CPMGetPackage (fmindex) # FM-Index
+CPMGetPackage (hibf) # (Hierarchical) Interleaved Bloom Filter
+CPMGetPackage (seqan3) # Sequence analysis
+CPMGetPackage (sharg) # Argument parser
 
 # Add the application. This will include `src/CMakeLists.txt`.
 add_subdirectory (src)
 
 # An option to disable configuring and building the tests. Tests are enabled by default.
-# If your project-name (line 8 of this file) is `app-template`, the option will be `app-template_TEST`.
 # It can be used when calling CMake: `cmake .. -Dapp-template_TEST=OFF`.
 # It is good practice to allow disabling tests. If another project includes your application,
 # it might not want to build your tests.

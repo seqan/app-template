@@ -28,7 +28,6 @@ jobs:
       - name: Run clang-format
         uses: DoozyX/clang-format-lint-action@v0.18
         with:
-          clangFormatVersion: 17
           inplace: True
 
       - name: Run cmake-format

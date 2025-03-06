@@ -2,11 +2,13 @@
 # SPDX-FileCopyrightText: 2016-2025, Knut Reinert & MPI für molekulare Genetik
 # SPDX-License-Identifier: CC0-1.0
 
-# CPM Package Lock
+# CPM Package Lock (https://github.com/cpm-cmake/CPM.cmake)
 # This file should be committed to version control
 
+# cmake-format: off
+
 # hibf
-set (HIBF_VERSION af26c24dfbd8489760166acdb68b84921866ce3f)
+set (HIBF_VERSION af26c24dfbd8489760166acdb68b84921866ce3f CACHE STRING "" FORCE)
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -17,7 +19,7 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION e9bc14ba8818f980727221dc936dbe6361eb87fd)
+set (SHARG_VERSION e9bc14ba8818f980727221dc936dbe6361eb87fd CACHE STRING "" FORCE)
 CPMDeclarePackage (sharg
                    NAME sharg
                    GIT_TAG ${SHARG_VERSION} # main
@@ -28,7 +30,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 7e0d88d15fc82b8b8a5548f6eebea8602faf6446)
+set (SEQAN3_VERSION 7e0d88d15fc82b8b8a5548f6eebea8602faf6446 CACHE STRING "" FORCE)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION} # main
@@ -39,7 +41,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION 3c4c031fe630d3ca9a5a3f28d91a78f312f36e11)
+set (FMINDEX_VERSION 3c4c031fe630d3ca9a5a3f28d91a78f312f36e11 CACHE STRING "" FORCE)
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
@@ -50,7 +52,7 @@ CPMDeclarePackage (fmindex
 )
 
 # googletest
-set (GOOGLETEST_VERSION 1.16.0)
+set (GOOGLETEST_VERSION 1.16.0 CACHE STRING "" FORCE)
 CPMDeclarePackage (googletest
                    NAME GTest
                    VERSION ${GOOGLETEST_VERSION}
@@ -62,7 +64,7 @@ CPMDeclarePackage (googletest
 )
 
 # use_ccache
-set (USE_CCACHE_VERSION d2a54ef555b6fc2d496a4c9506dbeb7cf899ce37)
+set (USE_CCACHE_VERSION d2a54ef555b6fc2d496a4c9506dbeb7cf899ce37 CACHE STRING "" FORCE)
 CPMDeclarePackage (use_ccache
                    NAME use_ccache
                    GIT_TAG ${USE_CCACHE_VERSION} # main
@@ -71,3 +73,5 @@ CPMDeclarePackage (use_ccache
                    SYSTEM TRUE
                    EXCLUDE_FROM_ALL TRUE
 )
+
+# cmake-format: on
