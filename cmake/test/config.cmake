@@ -2,9 +2,10 @@
 # SPDX-FileCopyrightText: 2016-2025 Knut Reinert & MPI für molekulare Genetik
 # SPDX-License-Identifier: CC0-1.0
 
+list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
+list (APPEND CMAKE_CTEST_ARGUMENTS "--no-tests=error") # Must be before `enable_testing ()`.
 CPMGetPackage (googletest)
 
-list (APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure") # Must be before `enable_testing ()`.
 enable_testing ()
 
 # Set directories for test output files, input data and binaries.
@@ -19,8 +20,8 @@ if (NOT TARGET ${PROJECT_NAME}_test)
     add_library (${PROJECT_NAME}_test INTERFACE)
     target_compile_options (${PROJECT_NAME}_test INTERFACE "-pedantic" "-Wall" "-Wextra")
 
-    # GCC12 and above: Disable warning about std::hardware_destructive_interference_size not being ABI-stable.
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # Disable warning about std::hardware_destructive_interference_size not being ABI-stable.
         if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
             target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-interference-size")
         endif ()
@@ -31,15 +32,7 @@ if (NOT TARGET ${PROJECT_NAME}_test)
         endif ()
     endif ()
 
-    # GCC12 has some bogus warnings. They will not be fixed in googletest.
-    # https://github.com/google/googletest/issues/4232
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12 AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13)
-            target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-restrict")
-        endif ()
-    endif ()
-
-    target_link_libraries (${PROJECT_NAME}_test INTERFACE "${PROJECT_NAME}_lib" "GTest::gtest_main")
+    target_link_libraries (${PROJECT_NAME}_test INTERFACE "GTest::gtest_main" "${PROJECT_NAME}_lib")
     add_library (${PROJECT_NAME}::test ALIAS ${PROJECT_NAME}_test)
 endif ()
 

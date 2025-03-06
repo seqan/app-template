@@ -72,6 +72,7 @@ function (declare_datasource)
         )
     else ()
         FetchContent_Populate ("${datasource_name}"
+                               QUIET
                                URL "${ARG_URL}"
                                URL_HASH "${ARG_URL_HASH}"
                                DOWNLOAD_NAME "${ARG_FILE}"
