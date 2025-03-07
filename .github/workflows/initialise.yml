@@ -36,6 +36,7 @@ jobs:
 
           sed -i 's/# SeqAn App Template/# ${{ github.event.repository.name }}/' README.md
           sed -i 's/App-Template%20CI/${{ github.event.repository.name }}%20CI/g' README.md
+          sed -i 's@https://app.codecov.io/gh/seqan@https://app.codecov.io/gh/${{ github.repository_owner }}@g' README.md
           sed -i '/<!-- InitDelete -->/,/<!-- DeleteInit -->/d' README.md
 
           git checkout test/data/datasources.cmake
