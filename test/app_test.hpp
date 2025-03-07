@@ -55,8 +55,8 @@ protected:
         result.command = [&command_items...]()
         {
             std::ostringstream command{};
-            command << "SHARG_NO_VERSION_CHECK=1 " << BINDIR << APPNAME;
-            (void)((command << ' ' << command_items), ...); // (void) silences "state has no effect" warning if no items
+            command << "SHARG_NO_VERSION_CHECK=1 " << BINDIR;
+            (void)((command << command_items << ' '), ...); // (void) silences "state has no effect" warning if no items
             return command.str();
         }();
 
