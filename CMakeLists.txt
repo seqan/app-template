@@ -11,18 +11,11 @@ project (app-template
          DESCRIPTION "My application description"
 )
 
-# LTO support.
-include (CheckIPOSupported)
-check_ipo_supported (RESULT result
-                     OUTPUT output
-                     LANGUAGES CXX
-)
-if (result)
-    set (CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif ()
-
 # This allows including `*.cmake` files from the `cmake` directory without specifying the full path.
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+# Sets C++ standard and link time optimisation.
+include (cxx_config)
 
 # Specify the directories where to store the built archives, libraries and executables.
 include (output_directories)
@@ -45,11 +38,11 @@ CPMGetPackage (sharg) # Argument parser
 # Add the application. This will include `src/CMakeLists.txt`.
 add_subdirectory (src)
 
-# An option to disable configuring and building the tests. Tests are enabled by default.
+# An option to disable configuring and building the tests. Tests are enabled if this is the main CMakeLists.txt.
 # It can be used when calling CMake: `cmake .. -Dapp-template_TEST=OFF`.
 # It is good practice to allow disabling tests. If another project includes your application,
 # it might not want to build your tests.
-option (${PROJECT_NAME}_TEST "Enable testing for ${PROJECT_NAME}." ON)
+option (${PROJECT_NAME}_TEST "Enable testing for ${PROJECT_NAME}." ${PROJECT_IS_TOP_LEVEL})
 
 if (${PROJECT_NAME}_TEST)
     # Add the tests. This will include `test/CMakeLists.txt`.

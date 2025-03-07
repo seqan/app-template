@@ -41,7 +41,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION 3c4c031fe630d3ca9a5a3f28d91a78f312f36e11 CACHE STRING "" FORCE)
+set (FMINDEX_VERSION 78c0235fce77b91c74eddcb73bf79d8393a7110a CACHE STRING "" FORCE)
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
@@ -59,8 +59,7 @@ CPMDeclarePackage (googletest
                    GITHUB_REPOSITORY google/googletest
                    SYSTEM TRUE
                    EXCLUDE_FROM_ALL TRUE
-                   OPTIONS "BUILD_GMOCK OFF" "INSTALL_GTEST OFF" "CMAKE_CXX_STANDARD 20"
-                           "CMAKE_MESSAGE_LOG_LEVEL WARNING"
+                   OPTIONS "BUILD_GMOCK OFF" "INSTALL_GTEST OFF" "CMAKE_MESSAGE_LOG_LEVEL WARNING"
 )
 
 # use_ccache
