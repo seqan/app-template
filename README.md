@@ -98,7 +98,9 @@ The instructions below are for the template repository and will not work for you
 
 1. Go to https://codecov.io/gh/seqan/app-template.
 2. Sign in with your GitHub account.
-3. Go to https://app.codecov.io/gh/seqan/app-template/config/general.
+3. Go to https://app.codecov.io/gh/seqan/app-template/config/general.<br>
+   If the repository cannot be found, go to https://app.codecov.io/gh/seqan and click `Resync`.<br>
+   Then try again.
 4. Copy the `Repository Upload Token`.
 5. Go to https://github.com/seqan/app-template/settings/secrets/actions.
 6. Add a `New repository secret` with the name `CODECOV_TOKEN` and the value of the `Repository Upload Token`.

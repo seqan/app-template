@@ -13,26 +13,11 @@ file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output)
 add_definitions (-DOUTPUTDIR=\"${CMAKE_CURRENT_BINARY_DIR}/output/\")
 add_definitions (-DDATADIR=\"${CMAKE_CURRENT_BINARY_DIR}/data/\")
 add_definitions (-DBINDIR=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/\")
-add_definitions (-DAPPNAME=\"${PROJECT_NAME}\")
 
 # Add the test interface library.
 if (NOT TARGET ${PROJECT_NAME}_test)
     add_library (${PROJECT_NAME}_test INTERFACE)
-    target_compile_options (${PROJECT_NAME}_test INTERFACE "-pedantic" "-Wall" "-Wextra")
-
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        # Disable warning about std::hardware_destructive_interference_size not being ABI-stable.
-        if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
-            target_compile_options (${PROJECT_NAME}_test INTERFACE "-Wno-interference-size")
-        endif ()
-
-        # Warn about failed return value optimization.
-        if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14)
-            target_compile_options (${PROJECT_NAME}_lib PUBLIC "-Wnrvo")
-        endif ()
-    endif ()
-
-    target_link_libraries (${PROJECT_NAME}_test INTERFACE "GTest::gtest_main" "${PROJECT_NAME}_lib")
+    target_link_libraries (${PROJECT_NAME}_test INTERFACE GTest::gtest_main ${PROJECT_NAME}_lib)
     add_library (${PROJECT_NAME}::test ALIAS ${PROJECT_NAME}_test)
 endif ()
 
