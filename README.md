@@ -106,6 +106,12 @@ The instructions below are for the template repository and will not work for you
 6. Add a `New repository secret` with the name `CODECOV_TOKEN` and the value of the `Repository Upload Token`.
 7. Done! The next push to your repository will create a Codecov report.
 
+## Setting up permissions for Lint action (optional)
+
+1. Go to https://github.com/seqan/app-template/settings/actions.
+2. Under `Workflow permissions`, at the very bottom, tick `Allow GitHub Actions to create and approve pull requests` and click `Save`.
+3. You can go to https://github.com/seqan/app-template/actions/workflows/lint.yml and click `Run workflow` to run linting.
+
 ## Instructions for SeqAn3 Tutorial Purposes:
 
 If you just some quick hands-on experience with SeqAn Libraries, you can also just clone this repository and start editing the `src/main.cpp` file.
