@@ -79,7 +79,7 @@ function (declare_datasource)
                                DOWNLOAD_NO_EXTRACT TRUE # don't extract archive files like .tar.gz.
                                SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/data/"
                                BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/data/"
-                               EXCLUDE_FROM_ALL TRUE ${ARG_UNPARSED_ARGUMENTS}
+                               ${ARG_UNPARSED_ARGUMENTS}
         )
     endif ()
 
