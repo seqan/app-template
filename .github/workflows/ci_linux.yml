@@ -44,7 +44,7 @@ jobs:
 
       - name: Configure tests
         run: |
-          mkdir build && cd build
+          mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }} -Werror"
 

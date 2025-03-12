@@ -43,7 +43,7 @@ jobs:
 
       - name: Configure tests
         run: |
-          mkdir build && cd build
+          mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Debug \
                    -DCMAKE_CXX_FLAGS="--coverage -fprofile-arcs -ftest-coverage -fprofile-abs-path -Werror" \
                    -DCMAKE_C_FLAGS="--coverage -fprofile-arcs -ftest-coverage -fprofile-abs-path -Werror" \
