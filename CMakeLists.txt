@@ -45,6 +45,7 @@ add_subdirectory (src)
 option (${PROJECT_NAME}_TEST "Enable testing for ${PROJECT_NAME}." ${PROJECT_IS_TOP_LEVEL})
 
 if (${PROJECT_NAME}_TEST)
+    enable_testing () # Makes ctest work in root build directory.
     # Add the tests. This will include `test/CMakeLists.txt`.
     add_subdirectory (test EXCLUDE_FROM_ALL)
 endif ()
