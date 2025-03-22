@@ -8,7 +8,7 @@
 # cmake-format: off
 
 # hibf
-set (HIBF_VERSION 8fb4898ea734c904277ccfb2402184b1cf058b91 CACHE STRING "" FORCE)
+set (HIBF_VERSION 4fd141e48d2977da9603e67fcdab61c9a32084d8 CACHE STRING "" FORCE)
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -19,7 +19,7 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION c81c1f858054c7114d4d0e82c1c5c2d78574cb5e CACHE STRING "" FORCE)
+set (SHARG_VERSION c4fa5130c986acd6f85ab6df476de2447b6dff1c CACHE STRING "" FORCE)
 CPMDeclarePackage (sharg
                    NAME sharg
                    GIT_TAG ${SHARG_VERSION} # main
@@ -30,7 +30,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 2863cbbe336a51c21932c69635e814b6e3a8a4ce CACHE STRING "" FORCE)
+set (SEQAN3_VERSION 6765a463e1038758d92c37362185bcdde9a7eb23 CACHE STRING "" FORCE)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION} # main
