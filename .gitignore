@@ -36,3 +36,4 @@
 *.app
 
 /build/
+/.vscode/
