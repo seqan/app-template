@@ -52,7 +52,7 @@ CPMDeclarePackage (fmindex
 )
 
 # googletest
-set (GOOGLETEST_VERSION 1.16.0 CACHE STRING "" FORCE)
+set (GOOGLETEST_VERSION 1.17.0 CACHE STRING "" FORCE)
 CPMDeclarePackage (googletest
                    NAME GTest
                    VERSION ${GOOGLETEST_VERSION}
