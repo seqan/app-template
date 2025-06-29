@@ -30,7 +30,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 9360528ee1a8af873ee376a7a7624f35497a7645 CACHE STRING "" FORCE)
+set (SEQAN3_VERSION 6dfa1b442d1fabd07024edcc37a29b61d5beae8f CACHE STRING "" FORCE)
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    GIT_TAG ${SEQAN3_VERSION} # main
@@ -41,7 +41,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION fab30c6cd4c4980319885ae34bd7e6c0e8c69bbe CACHE STRING "" FORCE)
+set (FMINDEX_VERSION 7ed8c3a6035a898f3e9574c5aa96af8b74ca6ef4 CACHE STRING "" FORCE)
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
