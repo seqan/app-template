@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: REUSE Compliance Check
         continue-on-error: false # Set to true to not fail the build in case of non-compliance.
