@@ -45,8 +45,8 @@ jobs:
         run: |
           mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Debug \
-                   -DCMAKE_CXX_FLAGS="--coverage -fprofile-arcs -ftest-coverage -fprofile-abs-path -Werror" \
-                   -DCMAKE_C_FLAGS="--coverage -fprofile-arcs -ftest-coverage -fprofile-abs-path -Werror" \
+                   -DCMAKE_CXX_FLAGS="--coverage -fprofile-arcs -ftest-coverage -fprofile-abs-path" \
+                   -DCMAKE_C_FLAGS="--coverage -fprofile-arcs -ftest-coverage -fprofile-abs-path" \
                    -DCMAKE_EXE_LINKER_FLAGS="-Wl,-lgcov" \
                    -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-lgcov"
 

@@ -14,6 +14,13 @@ target_link_libraries (${PROJECT_NAME}_lib PUBLIC seqan3::seqan3 sharg::sharg se
 
 target_compile_options (${PROJECT_NAME}_lib PUBLIC "-pedantic" "-Wall" "-Wextra")
 
+option (${PROJECT_NAME}_WITH_WERROR "Report compiler warnings as errors." ON)
+
+if (${PROJECT_NAME}_WITH_WERROR)
+    target_compile_options (${PROJECT_NAME}_lib PUBLIC "-Werror")
+    message (STATUS "Building tests with -Werror.")
+endif ()
+
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # Disable warning about std::hardware_destructive_interference_size not being ABI-stable.
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)

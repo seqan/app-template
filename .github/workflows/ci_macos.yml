@@ -25,7 +25,7 @@ defaults:
 jobs:
   build:
     name: ${{ matrix.compiler }}
-    runs-on: macos-14
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
@@ -42,8 +42,7 @@ jobs:
       - name: Configure tests
         run: |
           mkdir -p build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release \
-                   -DCMAKE_CXX_FLAGS="-Werror"
+          cmake .. -DCMAKE_BUILD_TYPE=Release
 
       - name: Build and run tests
         working-directory: build
