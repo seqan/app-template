@@ -8,7 +8,7 @@
 # cmake-format: off
 
 # hibf
-set (HIBF_VERSION 99edc05f9c88892c0019c6ef68affbac623f57d2 CACHE STRING "" FORCE)
+set (HIBF_VERSION 99edc05f9c88892c0019c6ef68affbac623f57d2 CACHE STRING "")
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -19,7 +19,7 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION f9c5c7baf1c60bd556a5726ae4a737ed1536fabf CACHE STRING "" FORCE)
+set (SHARG_VERSION f9c5c7baf1c60bd556a5726ae4a737ed1536fabf CACHE STRING "")
 CPMDeclarePackage (sharg
                    NAME sharg
                    GIT_TAG ${SHARG_VERSION} # main
@@ -30,10 +30,11 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 8724133817fc7889b280253c209aa47f6395a13c CACHE STRING "" FORCE)
+set (SEQAN3_VERSION 3.4.0 CACHE STRING "")
 CPMDeclarePackage (seqan3
                    NAME seqan3
-                   GIT_TAG ${SEQAN3_VERSION} # main
+                   VERSION ${SEQAN3_VERSION}
+                   GIT_TAG ${SEQAN3_VERSION}
                    GITHUB_REPOSITORY seqan/seqan3
                    SYSTEM TRUE
                    EXCLUDE_FROM_ALL TRUE
@@ -41,7 +42,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION a6be20e34e34a1a1f47a29bcafdcc0c5203c13a5 CACHE STRING "" FORCE)
+set (FMINDEX_VERSION a6be20e34e34a1a1f47a29bcafdcc0c5203c13a5 CACHE STRING "")
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
@@ -52,7 +53,7 @@ CPMDeclarePackage (fmindex
 )
 
 # googletest
-set (GOOGLETEST_VERSION 1.17.0 CACHE STRING "" FORCE)
+set (GOOGLETEST_VERSION 1.17.0 CACHE STRING "")
 CPMDeclarePackage (googletest
                    NAME GTest
                    VERSION ${GOOGLETEST_VERSION}
@@ -63,7 +64,7 @@ CPMDeclarePackage (googletest
 )
 
 # use_ccache
-set (USE_CCACHE_VERSION d2a54ef555b6fc2d496a4c9506dbeb7cf899ce37 CACHE STRING "" FORCE)
+set (USE_CCACHE_VERSION d2a54ef555b6fc2d496a4c9506dbeb7cf899ce37 CACHE STRING "")
 CPMDeclarePackage (use_ccache
                    NAME use_ccache
                    GIT_TAG ${USE_CCACHE_VERSION} # main
