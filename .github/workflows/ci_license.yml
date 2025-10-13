@@ -29,4 +29,4 @@ jobs:
 
       - name: REUSE Compliance Check
         continue-on-error: false # Set to true to not fail the build in case of non-compliance.
-        uses: fsfe/reuse-action@v5
+        uses: fsfe/reuse-action@v6
