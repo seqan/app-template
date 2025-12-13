@@ -42,7 +42,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION f2343345927ba8528ef7ab58049542915da130c7 CACHE STRING "")
+set (FMINDEX_VERSION 03435b1fb5749a9ddc42e7b27992b21f297528d0 CACHE STRING "")
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
