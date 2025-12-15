@@ -37,7 +37,7 @@ jobs:
           args: --config-files .cmake-format.yaml --in-place
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: '[MISC] Automatic linting'
           committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
