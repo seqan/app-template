@@ -19,10 +19,11 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION d3b6c025554fc28a6f94d475fc136894b441432e CACHE STRING "")
+set (SHARG_VERSION 1.2.1 CACHE STRING "")
 CPMDeclarePackage (sharg
                    NAME sharg
-                   GIT_TAG ${SHARG_VERSION} # main
+                   VERSION ${SHARG_VERSION}
+                   GIT_TAG ${SHARG_VERSION}
                    GITHUB_REPOSITORY seqan/sharg-parser
                    SYSTEM TRUE
                    EXCLUDE_FROM_ALL TRUE
