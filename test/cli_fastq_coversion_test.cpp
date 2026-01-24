@@ -13,6 +13,7 @@ TEST_F(fastq_to_fasta, no_options)
     app_test_result const result = execute_app("app-template");
     std::string_view const expected{"Fastq-to-Fasta-Converter\n"
                                     "========================\n"
+                                    "    app-template [-v|--verbose] [-o|--output path] [--] path\n"
                                     "    Try -h or --help for more information.\n"};
 
     EXPECT_SUCCESS(result);
