@@ -19,7 +19,7 @@ CPMDeclarePackage (hibf
 )
 
 # sharg
-set (SHARG_VERSION 1.2.1 CACHE STRING "")
+set (SHARG_VERSION 1.2.2 CACHE STRING "")
 CPMDeclarePackage (sharg
                    NAME sharg
                    VERSION ${SHARG_VERSION}
@@ -31,7 +31,7 @@ CPMDeclarePackage (sharg
 )
 
 # seqan3
-set (SEQAN3_VERSION 3.4.0 CACHE STRING "")
+set (SEQAN3_VERSION 3.4.2 CACHE STRING "")
 CPMDeclarePackage (seqan3
                    NAME seqan3
                    VERSION ${SEQAN3_VERSION}
@@ -43,7 +43,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION 45ac222cb73c7de4a88f0740223fe8b902cdeec8 CACHE STRING "")
+set (FMINDEX_VERSION 62467454bef4ac7fcddc3bd3e96c6a05cb922a5b CACHE STRING "")
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
