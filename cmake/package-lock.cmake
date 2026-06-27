@@ -8,7 +8,7 @@
 # cmake-format: off
 
 # hibf
-set (HIBF_VERSION a78290006b7f945076ed3d286ad2dbc59879d797 CACHE STRING "")
+set (HIBF_VERSION 382e2a790db0cb8e72be8cbfe1f86b7eb11bada6 CACHE STRING "")
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -43,7 +43,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION 7f2834e4884983d21c62c38093e56fe1f38805b5 CACHE STRING "")
+set (FMINDEX_VERSION ef9f545309f9a93e0e2aef18ed44fcbc681cf77f CACHE STRING "")
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
