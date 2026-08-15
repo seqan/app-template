@@ -8,7 +8,7 @@
 # cmake-format: off
 
 # hibf
-set (HIBF_VERSION f8a4034717a3411931fc0de76c2a6d277aa8303a CACHE STRING "")
+set (HIBF_VERSION 160a80994dd822fc70f01ae270bf3bde6f0ba458 CACHE STRING "")
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
@@ -43,7 +43,7 @@ CPMDeclarePackage (seqan3
 )
 
 # fmindex
-set (FMINDEX_VERSION c366c0218ba014a6a1d171e14933b0f431575064 CACHE STRING "")
+set (FMINDEX_VERSION 7a5bdf8bd97d8c357c37d0c1dd2017b3cd632466 CACHE STRING "")
 CPMDeclarePackage (fmindex
                    NAME fmindex
                    GIT_TAG ${FMINDEX_VERSION} # main
@@ -54,7 +54,7 @@ CPMDeclarePackage (fmindex
 )
 
 # googletest
-set (GOOGLETEST_VERSION 1.17.0 CACHE STRING "")
+set (GOOGLETEST_VERSION 1.18.0 CACHE STRING "")
 CPMDeclarePackage (googletest
                    NAME GTest
                    VERSION ${GOOGLETEST_VERSION}
