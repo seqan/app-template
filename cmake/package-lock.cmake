@@ -8,7 +8,7 @@
 # cmake-format: off
 
 # hibf
-set (HIBF_VERSION a0d554a8c60bed9697b757bf4f8ff983a3493226 CACHE STRING "")
+set (HIBF_VERSION 7887834a58cb4bf04ccb61ce9d43125aec40a3bb CACHE STRING "")
 CPMDeclarePackage (hibf
                    NAME hibf
                    GIT_TAG ${HIBF_VERSION} # main
