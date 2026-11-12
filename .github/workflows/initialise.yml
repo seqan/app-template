@@ -43,6 +43,7 @@ jobs:
           git checkout .github/workflows/*
           rm .github/workflows/initialise.yml
           rm .github/workflows/ci_cpm.yml
+          rm .github/workflows/dependency_submission.yml
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v11
